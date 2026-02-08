@@ -19,10 +19,11 @@
             font-family: 'Space Grotesk', sans-serif;
         }
         
+        /* Revised Animation: Reversible */
         .reveal {
             opacity: 0;
             transform: translateY(50px);
-            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .reveal.active {
             opacity: 1;
@@ -43,8 +44,8 @@
             width: max-content;
             gap: 6rem;
         }
-        .animate-ltr { animation: scrollLTR 18s linear infinite; }
-        .animate-rtl { animation: scrollRTL 18s linear infinite; }
+        .animate-ltr { animation: scrollLTR 35s linear infinite; }
+        .animate-rtl { animation: scrollRTL 35s linear infinite; }
 
         .stat-value {
             font-size: clamp(3.5rem, 12vw, 6rem);
@@ -56,7 +57,7 @@
             background: radial-gradient(circle at 50% 50%, #fafafa 0%, #ffffff 100%);
         }
 
-        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #ffffff; }
         ::-webkit-scrollbar-thumb { background: #000000; }
 
@@ -71,16 +72,18 @@
         .industry-card {
             border: 1px solid #f0f0f0;
             transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
         }
         .industry-card:hover {
             border-color: #000000;
             background-color: #fafafa;
-            transform: scale(1.01);
+            transform: translateY(-5px);
         }
 
         .hover-mask {
             position: relative;
             overflow: hidden;
+            transition: color 0.4s;
         }
         .hover-mask::after {
             content: '';
@@ -105,110 +108,182 @@
         .hero-image-container:hover {
             transform: scale(1.02);
         }
+        
+        .client-logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+        }
+        
+        .country-pill {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid #e5e5e5;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+        }
+        .country-pill:hover {
+            border-color: #000;
+            background-color: #000;
+            color: #fff;
+        }
     </style>
 </head>
 <body class="selection:bg-black selection:text-white">
 
-    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-8 py-8 flex justify-between items-center">
-            <span class="text-2xl font-extrabold tracking-tighter">IHD.</span>
-            <div class="hidden md:flex gap-12 text-[10px] font-bold uppercase tracking-[0.3em]">
-                <a href="#about" class="hover:opacity-40 transition">The Story</a>
-                <a href="#experience" class="hover:opacity-40 transition">Portfolio</a>
-                <a href="#matchmaker" class="hover:opacity-40 transition">Funnel</a>
-                <a href="#education" class="hover:opacity-40 transition">Education</a>
-                <a href="https://www.linkedin.com/in/ian-harold-cosyao-daluyen-26295b325/" target="_blank" class="hover:opacity-40 transition border-b border-black pb-1">LinkedIn</a>
+    <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+            <span class="text-2xl font-extrabold tracking-tighter hover:tracking-widest transition-all duration-500 cursor-pointer">IHD.</span>
+            <div class="hidden md:flex gap-8 text-[11px] font-bold uppercase tracking-[0.2em]">
+                <a href="#about" class="hover:text-gray-500 transition">About</a>
+                <a href="#clients" class="hover:text-gray-500 transition">Clients</a>
+                <a href="#experience" class="hover:text-gray-500 transition">Expertise</a>
+                <a href="#matchmaker" class="hover:text-gray-500 transition">Funnel</a>
+                <a href="#certifications" class="hover:text-gray-500 transition">Certs</a>
+                <a href="https://www.linkedin.com/in/ian-harold-cosyao-daluyen-26295b325/" target="_blank" class="bg-black text-white px-4 py-2 hover:bg-gray-800 transition">LinkedIn</a>
             </div>
         </div>
     </nav>
 
-    <main>
-        <!-- Balanced Hero Section -->
-        <section id="about" class="min-h-screen flex items-center px-8 hero-gradient">
-            <div class="max-w-7xl mx-auto w-full pt-40 pb-24">
-                <div class="grid lg:grid-cols-2 gap-16 items-center">
+    <!-- Reduced top padding here -->
+    <main class="pt-0"> 
+        <!-- Hero Section -->
+        <section id="about" class="px-6 hero-gradient relative pt-32 pb-16">
+            <div class="max-w-7xl mx-auto w-full">
+                <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                     <!-- Left Column: Text -->
                     <div class="reveal">
-                        <p class="text-[12px] uppercase tracking-[0.5em] mb-8 text-gray-400 font-bold">Marketing Strategy and Engineering Precision</p>
-                        <h1 class="text-5xl md:text-8xl font-extrabold leading-[0.9] tracking-tighter mb-10">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="h-[1px] w-12 bg-black"></div>
+                            <p class="text-[11px] uppercase tracking-[0.4em] font-bold text-gray-500">Marketing Strategy & Engineering Precision</p>
+                        </div>
+                        <h1 class="text-6xl md:text-8xl font-extrabold leading-[0.9] tracking-tighter mb-8">
                             Ian Harold <br> Daluyen
                         </h1>
-                        <p class="text-xl md:text-2xl text-gray-400 leading-tight font-light max-w-xl mb-12">
-                            I am tired of fake promises and “too good to be true” offers. That is why I am here: to give you something real. I am here to help you start, the right way.
+                        <p class="text-xl md:text-2xl text-gray-500 leading-tight font-light max-w-xl mb-10">
+                            I treat every digital project as a high-performance system. No fake promises—just engineered results.
                         </p>
-                        <div class="p-10 border border-black rounded-sm bg-white inline-block w-full max-w-md">
-                            <p class="text-lg font-medium leading-relaxed mb-6">
-                                I treat every digital project as a high performance system. It must be built for maximum efficiency and total reliability.
-                            </p>
-                            <div class="flex items-center gap-6">
-                                <div class="h-1 w-16 bg-black"></div>
-                                <span class="text-[12px] font-bold uppercase tracking-[0.3em]">Philippines Based Expert</span>
-                            </div>
+                        
+                        <div class="flex flex-col sm:flex-row gap-6">
+                            <a href="#matchmaker" class="hover-mask inline-flex justify-center items-center border-2 border-black px-10 py-5 text-[12px] font-bold uppercase tracking-[0.2em] transition-all">
+                                Start the Funnel
+                            </a>
                         </div>
                     </div>
                     
-                    <!-- Right Column: Larger Image in Color -->
-                    <div class="reveal" style="transition-delay: 0.3s">
+                    <!-- Right Column: Image -->
+                    <div class="reveal relative" style="transition-delay: 0.2s">
                         <div class="hero-image-container">
-                            <img src="https://i.ibb.co/XrmRfJjM/Porfolioom-image.png" alt="Ian Harold Daluyen" class="w-full h-auto object-cover rounded-sm shadow-2xl">
-                            <!-- Artistic Border Overlay -->
-                            <div class="absolute -bottom-10 -right-10 w-full h-full border-2 border-black -z-10"></div>
+                            <img src="https://i.ibb.co/XrmRfJjM/Porfolioom-image.png" alt="Ian Harold Daluyen" class="w-full max-w-md mx-auto lg:max-w-full h-auto object-cover rounded-sm shadow-xl">
+                            <!-- Geometric Accent -->
+                            <div class="absolute -top-6 -right-6 w-24 h-24 border-t-4 border-r-4 border-black hidden md:block"></div>
+                            <div class="absolute -bottom-6 -left-6 w-24 h-24 border-b-4 border-l-4 border-black hidden md:block"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Triple Line Marquee -->
-        <section class="py-24 border-y border-gray-100 overflow-hidden bg-white">
-            <div class="flex flex-col gap-10">
-                <div class="flex overflow-hidden">
+        <!-- Marquee Tools -->
+        <section class="py-12 border-y border-gray-100 overflow-hidden bg-white">
+            <div class="flex flex-col gap-8">
+                <div class="flex overflow-hidden opacity-30 hover:opacity-100 transition-opacity duration-500">
                     <div class="marquee-container animate-ltr">
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">GHL</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Affinity</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Adobe Creative Cloud</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Canva</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">ClickUp</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Visual Studio Code</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Google Workspace</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Microsoft</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">CapCut</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">GHL</span>
+                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">HighLevel</span>
+                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">HubSpot</span>
+                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">CapCut</span>
+                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">DaVinci Resolve</span>
+                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">ClickUp</span>
+                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">Figma</span>
+                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">Affinity</span>
+                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">Adobe CC</span>
+                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">Firebase</span>
+                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">Google Ads</span>
                     </div>
                 </div>
-                <div class="flex overflow-hidden">
-                    <div class="marquee-container animate-rtl">
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">GHL</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Affinity</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Adobe Creative Cloud</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Canva</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">ClickUp</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Visual Studio Code</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Google Workspace</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Microsoft</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">CapCut</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">GHL</span>
+            </div>
+        </section>
+
+        <!-- TRUSTED BY / WORK HISTORY -->
+        <section id="clients" class="py-32 px-6 bg-black text-white">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-20 reveal">
+                    <div>
+                        <p class="text-[10px] uppercase tracking-[0.5em] mb-4 text-gray-400 font-bold">Work History & Collaborations</p>
+                        <h2 class="text-4xl md:text-6xl font-bold tracking-tighter">Engineering Trust.</h2>
+                    </div>
+                    <div class="mt-8 md:mt-0 text-right">
+                        <p class="text-gray-400 max-w-sm ml-auto">
+                            Partnering with global entities to streamline operations and amplify digital reach.
+                        </p>
                     </div>
                 </div>
-                <div class="flex overflow-hidden">
-                    <div class="marquee-container animate-ltr">
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">GHL</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Affinity</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Adobe Creative Cloud</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Canva</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">ClickUp</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Visual Studio Code</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Google Workspace</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">Microsoft</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">CapCut</span>
-                        <span class="software-tag text-2xl md:text-3xl font-extrabold tracking-tighter opacity-10 uppercase">GHL</span>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Amazon -->
+                    <div class="reveal border border-white/20 p-10 flex flex-col justify-between h-80 hover:bg-white/10 transition-colors">
+                        <span class="text-4xl client-logo-text">amazon</span>
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Role</p>
+                            <p class="font-bold">Marketing & Training Manager</p>
+                        </div>
+                    </div>
+
+                    <!-- T-Mobile -->
+                    <div class="reveal border border-white/20 p-10 flex flex-col justify-between h-80 hover:bg-white/10 transition-colors" style="transition-delay: 0.1s">
+                        <span class="text-4xl client-logo-text tracking-tighter">T-Mobile</span>
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Role</p>
+                            <p class="font-bold">Marketing Lead Specialist</p>
+                        </div>
+                    </div>
+
+                    <!-- Sphere Rocket -->
+                    <div class="reveal border border-white/20 p-10 flex flex-col justify-between h-80 hover:bg-white/10 transition-colors" style="transition-delay: 0.2s">
+                        <span class="text-3xl client-logo-text">Sphere Rocket</span>
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Role</p>
+                            <p class="font-bold">Digital Marketing Manager</p>
+                        </div>
+                    </div>
+
+                    <!-- Refugee Archive -->
+                    <div class="reveal border border-white/20 p-10 flex flex-col justify-between h-80 hover:bg-white/10 transition-colors" style="transition-delay: 0.3s">
+                        <span class="text-3xl client-logo-text leading-none">The Refugee<br>Archive</span>
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Role</p>
+                            <p class="font-bold">Social Media Manager</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW SECTION: GLOBAL REACH -->
+        <section class="py-24 px-6 border-b border-gray-100">
+            <div class="max-w-7xl mx-auto text-center">
+                <div class="reveal">
+                    <p class="text-[11px] uppercase tracking-[0.4em] font-bold text-gray-500 mb-6">International Scope</p>
+                    <h3 class="text-3xl md:text-5xl font-bold mb-12 tracking-tight">Countries I have direct experience working with</h3>
+                    <div class="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+                        <span class="country-pill">USA</span>
+                        <span class="country-pill">Nigeria</span>
+                        <span class="country-pill">Bangladesh</span>
+                        <span class="country-pill">Canada</span>
+                        <span class="country-pill">India</span>
+                        <span class="country-pill">Australia</span>
+                        <span class="country-pill">France</span>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Industry Vertical Experience -->
-        <section id="experience" class="py-40 px-8">
+        <section id="experience" class="py-40 px-6">
             <div class="max-w-7xl mx-auto">
                 <div class="flex flex-col md:flex-row justify-between items-end mb-24 reveal">
                     <div>
@@ -219,40 +294,66 @@
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Real Estate -->
                     <div class="industry-card p-12 reveal">
                         <h3 class="text-3xl font-bold mb-6 uppercase tracking-tight">Real Estate</h3>
-                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Architecting high conversion lead generation funnels and CRM automation for property developers and brokerage firms. Implementing targeted SEO strategy for localized property search dominance.</p>
+                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Architecting high-conversion lead generation funnels and CRM automation for property developers and brokerage firms. Implementing targeted SEO strategy for localized property search dominance.</p>
                         <div class="flex flex-wrap gap-4">
                             <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">GHL Funnels</span>
                             <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">SEO Strategy</span>
                         </div>
                     </div>
-                    <!-- Humanitarian with specific highlight -->
-                    <div class="industry-card p-12 reveal border-2 border-black/5" style="transition-delay: 0.1s">
+
+                    <!-- Humanitarian -->
+                    <div class="industry-card p-12 reveal" style="transition-delay: 0.1s">
                         <div class="flex justify-between items-start mb-6">
                             <h3 class="text-3xl font-bold uppercase tracking-tight">Humanitarian</h3>
-                            <span class="bg-black text-white text-[8px] font-bold px-2 py-1 uppercase tracking-widest">Special Offer</span>
+                            <span class="bg-black text-white text-[8px] font-bold px-2 py-1 uppercase tracking-widest">Non-Profit</span>
                         </div>
-                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Developing digital strategies for non profit organizations to increase awareness and streamline donation workflows. Specializing in free consultation and discounts for verified social impact initiatives.</p>
+                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Developing digital strategies for non-profit organizations to increase awareness and streamline donation workflows. Specializing in free consultation and discounts for verified social impact initiatives.</p>
                         <div class="flex flex-wrap gap-4">
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Free Consultation</span>
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Partner Discounts</span>
+                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Donation Ops</span>
+                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Awareness</span>
                         </div>
                     </div>
+
+                    <!-- Recruitment & Talent -->
                     <div class="industry-card p-12 reveal" style="transition-delay: 0.2s">
-                        <h3 class="text-3xl font-bold mb-6 uppercase tracking-tight">Tech Services</h3>
-                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Building robust web infrastructures and data organization systems using Firebase for software as a service companies. Creating search optimized content ecosystems to drive recurring traffic.</p>
+                        <h3 class="text-3xl font-bold mb-6 uppercase tracking-tight">Talent & Recruitment</h3>
+                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Streamlining the hiring pipeline with automated Applicant Tracking Systems (ATS) and outreach sequences. Reducing time-to-hire through engineered workflow automation.</p>
                         <div class="flex flex-wrap gap-4">
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">SaaS Growth</span>
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">SEO Strategy</span>
+                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">ATS Automation</span>
+                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Sourcing</span>
                         </div>
                     </div>
+
+                    <!-- Automation & Integration -->
                     <div class="industry-card p-12 reveal" style="transition-delay: 0.3s">
-                        <h3 class="text-3xl font-bold mb-6 uppercase tracking-tight">Clothing</h3>
-                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Engineering visual brand identities and high performance e commerce environments for fashion and lifestyle brands. Strategic SEO implementation for product discoverability and brand search authority.</p>
+                        <h3 class="text-3xl font-bold mb-6 uppercase tracking-tight">Automation</h3>
+                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Connecting disparate software ecosystems using custom API integrations and logic. Removing manual data entry to create self-sustaining operational loops.</p>
                         <div class="flex flex-wrap gap-4">
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Visual Branding</span>
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">E commerce</span>
+                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Zapier / Make</span>
+                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">API Logic</span>
+                        </div>
+                    </div>
+
+                    <!-- Paid Ads -->
+                    <div class="industry-card p-12 reveal" style="transition-delay: 0.4s">
+                        <h3 class="text-3xl font-bold mb-6 uppercase tracking-tight">Paid Advertising</h3>
+                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Engineering high-ROAS campaigns across Meta and Google. utilizing data-driven audience segmentation and retargeting algorithms to maximize ad spend efficiency.</p>
+                        <div class="flex flex-wrap gap-4">
+                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Meta Ads</span>
+                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Google Ads</span>
+                        </div>
+                    </div>
+
+                    <!-- Software Development -->
+                    <div class="industry-card p-12 reveal" style="transition-delay: 0.5s">
+                        <h3 class="text-3xl font-bold mb-6 uppercase tracking-tight">Software Dev</h3>
+                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Building robust web infrastructures and custom software solutions. Focusing on scalability, clean code architecture, and seamless user experiences.</p>
+                        <div class="flex flex-wrap gap-4">
+                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Full Stack</span>
+                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">SaaS</span>
                         </div>
                     </div>
                 </div>
@@ -260,63 +361,122 @@
         </section>
 
         <!-- Interactive Funnel -->
-        <section id="matchmaker" class="py-40 px-8 bg-black text-white">
-            <div class="max-w-4xl mx-auto">
+        <section id="matchmaker" class="py-40 px-6 bg-black text-white relative overflow-hidden">
+            <!-- Background Decoration -->
+            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-white opacity-[0.03] rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            
+            <div class="max-w-4xl mx-auto relative z-10">
                 <div class="text-center mb-24 reveal">
-                    <h2 class="text-5xl md:text-7xl font-bold mb-8 tracking-tighter">Matchmaker</h2>
+                    <h2 class="text-5xl md:text-7xl font-bold mb-8 tracking-tighter">The Matchmaker</h2>
                     <p class="text-gray-500 text-lg uppercase tracking-widest font-bold">Engineering your specific solution</p>
+                    <p class="text-gray-600 text-xs mt-4 uppercase tracking-widest">(4-Step Diagnostics)</p>
                 </div>
                 
-                <div id="funnel-container" class="bg-white/5 p-12 md:p-20 border border-white/10 rounded-sm min-h-[500px] flex flex-col justify-center reveal">
+                <div id="funnel-container" class="bg-white/5 p-8 md:p-20 border border-white/10 rounded-sm min-h-[500px] flex flex-col justify-center reveal backdrop-blur-sm">
+                    <!-- Funnel content injected via JS -->
                 </div>
             </div>
         </section>
 
         <!-- Stats -->
-        <section id="metrics" class="py-40 px-8">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-24">
-                <div class="reveal">
+        <section id="metrics" class="py-40 px-6">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-16 md:gap-8">
+                <div class="reveal border-l border-black pl-8">
                     <p class="stat-value">13</p>
-                    <p class="text-[12px] uppercase tracking-[0.4em] mt-8 text-gray-400 font-bold">Premium Clients</p>
+                    <p class="text-[11px] uppercase tracking-[0.3em] mt-6 text-gray-500 font-bold">Premium Clients</p>
                 </div>
-                <div class="reveal" style="transition-delay: 0.1s">
+                <div class="reveal border-l border-black pl-8" style="transition-delay: 0.1s">
                     <p class="stat-value">67</p>
-                    <p class="text-[12px] uppercase tracking-[0.4em] mt-8 text-gray-400 font-bold">Project Deliveries</p>
+                    <p class="text-[11px] uppercase tracking-[0.3em] mt-6 text-gray-500 font-bold">Projects Shipped</p>
                 </div>
-                <div class="reveal" style="transition-delay: 0.2s">
+                <div class="reveal border-l border-black pl-8" style="transition-delay: 0.2s">
                     <p class="stat-value">93%</p>
-                    <p class="text-[12px] uppercase tracking-[0.4em] mt-8 text-gray-400 font-bold">Initial Approval Rate</p>
+                    <p class="text-[11px] uppercase tracking-[0.3em] mt-6 text-gray-500 font-bold">Approval Rate</p>
                 </div>
-                <div class="reveal" style="transition-delay: 0.3s">
+                <div class="reveal border-l border-black pl-8" style="transition-delay: 0.3s">
                     <p class="stat-value">5+</p>
-                    <p class="text-[12px] uppercase tracking-[0.4em] mt-8 text-gray-400 font-bold">Industry Experience</p>
+                    <p class="text-[11px] uppercase tracking-[0.3em] mt-6 text-gray-500 font-bold">Years Active</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications -->
+        <section id="certifications" class="py-32 px-6 bg-gray-50">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-20 reveal">
+                    <h2 class="text-4xl md:text-6xl font-bold tracking-tighter mb-4">Technical Validations</h2>
+                    <p class="text-gray-500 text-lg uppercase tracking-widest">Certified expertise in growth engines</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- HubSpot Inbound -->
+                    <a href="https://app-na2.hubspot.com/academy/achievements/6c3q5m2z/en/1/ian-harold-daluyen/inbound-marketing" target="_blank" class="reveal group bg-white p-10 border border-gray-200 hover:border-black transition-all">
+                        <div class="flex justify-between items-start mb-8">
+                            <span class="text-3xl font-bold text-orange-500 group-hover:text-black transition-colors">HubSpot</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Inbound Marketing</h3>
+                        <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Verified</p>
+                        <p class="text-gray-700">Advanced methodology for attracting customers through content and value creation.</p>
+                    </a>
+
+                    <!-- HubSpot Email -->
+                    <a href="https://app-na2.hubspot.com/academy/achievements/hnbhhywh/en/1/ian-harold-daluyen/email-marketing" target="_blank" class="reveal group bg-white p-10 border border-gray-200 hover:border-black transition-all" style="transition-delay: 0.1s">
+                        <div class="flex justify-between items-start mb-8">
+                            <span class="text-3xl font-bold text-orange-500 group-hover:text-black transition-colors">HubSpot</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Email Marketing</h3>
+                        <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Verified</p>
+                        <p class="text-gray-700">Strategic contact management, segmentation, and lifecycle marketing automation.</p>
+                    </a>
+
+                    <!-- SaaS Marketing (Updated to be a Link) -->
+                    <a href="#" class="reveal group bg-white p-10 border border-gray-200 hover:border-black transition-all" style="transition-delay: 0.2s">
+                        <div class="flex justify-between items-start mb-8">
+                            <span class="text-3xl font-bold text-blue-600 group-hover:text-black transition-colors">SaaS</span>
+                            <!-- Link Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform text-black">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">SaaS Marketing</h3>
+                        <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Certification</p>
+                        <p class="text-gray-700">Specialized strategies for reducing churn, increasing LTV, and product-led growth.</p>
+                    </a>
                 </div>
             </div>
         </section>
 
         <!-- Education Foundation -->
-        <section id="education" class="py-40 px-8 bg-gray-50">
+        <section id="education" class="py-40 px-6">
             <div class="max-w-7xl mx-auto">
                 <h2 class="text-5xl md:text-7xl font-bold mb-20 tracking-tighter reveal">Academic Foundation</h2>
                 
-                <div class="flex flex-col gap-12">
-                    <div class="grid md:grid-cols-12 gap-8 items-center border-b border-gray-200 pb-12 reveal">
+                <div class="flex flex-col gap-16">
+                    <div class="grid md:grid-cols-12 gap-8 items-center border-b border-gray-100 pb-16 reveal">
                         <div class="md:col-span-4">
-                            <p class="text-3xl font-bold uppercase tracking-tight">Holy Angel University</p>
+                            <p class="text-3xl font-bold uppercase tracking-tight">Holy Angel Univ.</p>
+                            <p class="text-xs text-gray-400 mt-2">Pampanga, PH</p>
                         </div>
                         <div class="md:col-span-8">
-                            <p class="text-2xl font-medium mb-2">Bachelor of Science in Aeronautical Engineering</p>
-                            <p class="text-gray-400 text-sm uppercase tracking-widest font-bold">Academic Pursuit</p>
+                            <p class="text-2xl font-medium mb-3">Bachelor of Science in Aeronautical Engineering</p>
+                            <p class="text-gray-400 text-xs uppercase tracking-[0.2em] font-bold">The discipline of precision and systems thinking</p>
                         </div>
                     </div>
                     
-                    <div class="grid md:grid-cols-12 gap-8 items-center border-b border-gray-200 pb-12 reveal" style="transition-delay: 0.2s">
+                    <div class="grid md:grid-cols-12 gap-8 items-center border-b border-gray-100 pb-16 reveal" style="transition-delay: 0.1s">
                         <div class="md:col-span-4">
-                            <p class="text-3xl font-bold uppercase tracking-tight">STI College Angeles</p>
+                            <p class="text-3xl font-bold uppercase tracking-tight">STI College</p>
+                            <p class="text-xs text-gray-400 mt-2">Angeles, PH</p>
                         </div>
                         <div class="md:col-span-8">
-                            <p class="text-2xl font-medium mb-2">Senior High School Diploma in STEM</p>
-                            <p class="text-gray-400 text-sm uppercase tracking-widest font-bold">Science Technology Engineering and Mathematics</p>
+                            <p class="text-2xl font-medium mb-3">Senior High School Diploma in STEM</p>
+                            <p class="text-gray-400 text-xs uppercase tracking-[0.2em] font-bold">Science Technology Engineering and Mathematics</p>
                         </div>
                     </div>
                 </div>
@@ -324,152 +484,362 @@
         </section>
 
         <!-- Final Contact -->
-        <section id="contact" class="py-60 px-8 text-center bg-white">
+        <section id="contact" class="py-60 px-6 text-center bg-white relative">
             <div class="max-w-5xl mx-auto">
                 <h2 class="text-6xl md:text-[10rem] font-extrabold mb-12 tracking-tighter reveal">Deploy.</h2>
-                <p class="text-gray-500 text-3xl mb-20 max-w-2xl mx-auto reveal">I build systems that work when you are sleeping. If you are ready for precision reach out.</p>
+                <p class="text-gray-500 text-2xl md:text-3xl mb-20 max-w-2xl mx-auto reveal">I build systems that work when you are sleeping. <br>If you are ready for precision, reach out.</p>
                 <div class="reveal">
-                    <a href="mailto:ianharoldcosyaodaluyen@gmail.com?subject=Service Request&body=Hi Yanyan,%0D%0A%0D%0AI am reaching out to discuss a potential partnership. Note: Due to high volume of request we are diligently processing every inquiry." class="hover-mask inline-block border-2 border-black px-24 py-10 text-[14px] font-bold uppercase tracking-[0.4em] transition-all">Inquiry and Strategy</a>
+                    <a href="mailto:ianharoldcosyaodaluyen@gmail.com?subject=Service Request&body=Hi Yanyan,%0D%0A%0D%0AI am reaching out to discuss a potential partnership. Note: Due to high volume of request we are diligently processing every inquiry." class="hover-mask inline-block bg-black text-white px-24 py-8 text-[14px] font-bold uppercase tracking-[0.4em] transition-all hover:bg-gray-900">Inquiry & Strategy</a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="py-24 px-8 border-t border-gray-100">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 text-[12px] font-bold uppercase tracking-[0.5em] text-gray-400">
-            <p>Ian Harold Daluyen 2024</p>
-            <div class="flex gap-16">
-                <a href="https://www.linkedin.com/in/ian-harold-cosyao-daluyen-26295b325/" target="_blank" class="hover:text-black transition">LinkedIn</a>
-                <span>Manila Philippines</span>
+    <footer class="py-24 px-6 border-t border-gray-100 bg-white">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 text-[12px] font-bold uppercase tracking-[0.3em] text-gray-400">
+            <p>Ian Harold Daluyen &copy; 2024</p>
+            <div class="flex flex-col md:flex-row gap-8 items-center">
+                <a href="https://www.linkedin.com/in/ian-harold-cosyao-daluyen-26295b325/" target="_blank" class="hover:text-black transition border-b border-transparent hover:border-black pb-1">LinkedIn</a>
+                <a href="#about" class="hover:text-black transition border-b border-transparent hover:border-black pb-1">Back to Top</a>
+                <span>Manila, Philippines</span>
             </div>
         </div>
     </footer>
 
     <script>
+        // Updated Observer for Reversible Animation
+        const observerOptions = {
+            threshold: 0.15, // Trigger when 15% visible
+            rootMargin: "0px 0px -50px 0px" // Offset slightly for better visual timing
+        };
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
+                // If scrolling down (entering view), add active class
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    // If scrolling up (leaving view), remove active class to reset animation
+                    // This allows the animation to play again when scrolling back to it
+                    entry.target.classList.remove('active');
+                }
             });
-        }, { threshold: 0.1 });
+        }, observerOptions);
+
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
         const myEmail = "ianharoldcosyaodaluyen@gmail.com";
         const highVolumeNote = "Note: Due to high volume of request we are diligently processing every inquiry. We are reviewing each request to ensure we provide the best service possible.";
 
+        // DEEPER FUNNEL LOGIC (Minimum 4 steps per path)
         const funnelData = {
             step1: {
-                question: "What is your primary concern?",
+                question: "What is your primary goal?",
                 options: [
-                    { label: "Branding", next: "branding_step2" },
-                    { label: "Workflow", next: "workflow_step2" },
-                    { label: "Systems", next: "systems_step2" },
-                    { label: "Website", next: "website_step2" }
+                    { label: "Growth & Ads", next: "growth_step2" },
+                    { label: "Talent & Ops", next: "talent_step2" },
+                    { label: "Dev & Web", next: "dev_step2" },
+                    { label: "Branding", next: "branding_step2" }
                 ]
             },
+            
+            // --- GROWTH PATH (4 Steps) ---
+            growth_step2: {
+                question: "Which channel?",
+                options: [
+                    { label: "Paid Advertising", next: "growth_ads_step3" },
+                    { label: "Organic Content", next: "growth_content_step3" }
+                ]
+            },
+            growth_ads_step3: {
+                question: "Platform Focus?",
+                options: [
+                    { label: "Google / Search", next: "growth_ads_step4_search" },
+                    { label: "Social (FB/IG)", next: "growth_ads_step4_social" }
+                ]
+            },
+            growth_ads_step4_search: {
+                question: "Monthly Budget?",
+                options: [
+                    { label: "Under $5k", next: "final_ads_starter" },
+                    { label: "Scale ($5k+)", next: "final_ads_scale" }
+                ]
+            },
+            growth_ads_step4_social: {
+                question: "Creative Status?",
+                options: [
+                    { label: "Need Creatives", next: "final_ads_creative" },
+                    { label: "Ready to Run", next: "final_ads_scale" }
+                ]
+            },
+            growth_content_step3: {
+                question: "Content Format?",
+                options: [
+                    { label: "Short Form Video", next: "growth_content_step4_video" },
+                    { label: "Written / SEO", next: "growth_content_step4_seo" }
+                ]
+            },
+            growth_content_step4_video: {
+                question: "Frequency?",
+                options: [
+                    { label: "Daily Posting", next: "final_content_heavy" },
+                    { label: "Weekly Strategic", next: "final_content_strat" }
+                ]
+            },
+            growth_content_step4_seo: {
+                question: "Target?",
+                options: [
+                    { label: "Local Ranking", next: "final_seo_local" },
+                    { label: "Global Authority", next: "final_seo_global" }
+                ]
+            },
+
+
+            // --- TALENT & OPS PATH (4 Steps) ---
+            talent_step2: {
+                question: "Key bottleneck?",
+                options: [
+                    { label: "Hiring / Recruiting", next: "talent_rec_step3" },
+                    { label: "Manual Data Entry", next: "talent_auto_step3" }
+                ]
+            },
+            talent_rec_step3: {
+                question: "Role Category?",
+                options: [
+                    { label: "Sales / Marketing", next: "talent_rec_step4_sales" },
+                    { label: "Technical / Dev", next: "talent_rec_step4_tech" }
+                ]
+            },
+            talent_rec_step4_sales: {
+                question: "Hiring Volume?",
+                options: [
+                    { label: "1-2 Key Hires", next: "final_recruitment_key" },
+                    { label: "High Volume", next: "final_recruitment_vol" }
+                ]
+            },
+            talent_rec_step4_tech: {
+                question: "Skill Level?",
+                options: [
+                    { label: "Entry / Support", next: "final_recruitment_supp" },
+                    { label: "Senior / Lead", next: "final_recruitment_key" }
+                ]
+            },
+            talent_auto_step3: {
+                question: "Current Stack?",
+                options: [
+                    { label: "Spreadsheets", next: "talent_auto_step4_sheets" },
+                    { label: "CRM (HubSpot/GHL)", next: "talent_auto_step4_crm" }
+                ]
+            },
+            talent_auto_step4_sheets: {
+                question: "Goal?",
+                options: [
+                    { label: "Move to CRM", next: "final_crm_migration" },
+                    { label: "Automate Sheets", next: "final_automation_simple" }
+                ]
+            },
+            talent_auto_step4_crm: {
+                question: "Integration?",
+                options: [
+                    { label: "Connect 3rd Party", next: "final_automation_api" },
+                    { label: "Internal Workflow", next: "final_crm_opt" }
+                ]
+            },
+
+
+            // --- DEV & WEB PATH (4 Steps) ---
+            dev_step2: {
+                question: "Project Type?",
+                options: [
+                    { label: "Custom Software", next: "dev_soft_step3" },
+                    { label: "Website Build", next: "dev_web_step3" }
+                ]
+            },
+            dev_web_step3: {
+                question: "Platform Preference?",
+                options: [
+                    { label: "E-com (Shopify)", next: "dev_web_step4_ecom" },
+                    { label: "Custom / Webflow", next: "dev_web_step4_custom" }
+                ]
+            },
+            dev_web_step4_ecom: {
+                question: "SKU Count?",
+                options: [
+                    { label: "Under 50", next: "final_web_sales" },
+                    { label: "Enterprise (500+)", next: "final_web_enterprise" }
+                ]
+            },
+            dev_web_step4_custom: {
+                question: "Primary Goal?",
+                options: [
+                    { label: "Brand Authority", next: "final_web_auth" },
+                    { label: "Lead Capture", next: "final_web_funnel" }
+                ]
+            },
+            dev_soft_step3: {
+                question: "Project Stage?",
+                options: [
+                    { label: "Idea / MVP", next: "dev_soft_step4_mvp" },
+                    { label: "Existing Product", next: "dev_soft_step4_scale" }
+                ]
+            },
+            dev_soft_step4_mvp: {
+                question: "User Base?",
+                options: [
+                    { label: "Internal Team", next: "final_dev_internal" },
+                    { label: "Public SaaS", next: "final_dev_saas" }
+                ]
+            },
+            dev_soft_step4_scale: {
+                question: "Priority?",
+                options: [
+                    { label: "Refactor / Speed", next: "final_dev_refactor" },
+                    { label: "New Features", next: "final_dev_features" }
+                ]
+            },
+
+
+            // --- BRANDING PATH (4 Steps) ---
             branding_step2: {
-                question: "What needs the most focus?",
+                question: "What needs focus?",
                 options: [
-                    { label: "Visual Identity", next: "branding_step3_visual" },
-                    { label: "Social Presence", next: "branding_step3_social" }
+                    { label: "Visual Identity", next: "brand_vis_step3" },
+                    { label: "Brand Strategy", next: "brand_strat_step3" }
                 ]
             },
-            branding_step3_visual: {
-                question: "Target outcome?",
+            brand_vis_step3: {
+                question: "Current State?",
                 options: [
-                    { label: "Complete Redesign", next: "final_branding_redesign" },
-                    { label: "New Brand Assets", next: "final_branding_assets" }
+                    { label: "New Brand", next: "brand_vis_step4_new" },
+                    { label: "Rebranding", next: "brand_vis_step4_rebrand" }
                 ]
             },
-            workflow_step2: {
-                question: "Identify the bottleneck?",
+            brand_vis_step4_new: {
+                question: "Deliverables?",
                 options: [
-                    { label: "Lead Management", next: "workflow_step3_leads" },
-                    { label: "Project Tracking", next: "workflow_step3_tracking" }
+                    { label: "Logo & Colors", next: "final_brand_identity" },
+                    { label: "Full System", next: "final_brand_system" }
                 ]
             },
-            workflow_step3_leads: {
-                question: "Scale level?",
+            brand_vis_step4_rebrand: {
+                question: "Reason?",
                 options: [
-                    { label: "High Volume Automation", next: "final_workflow_auto" },
-                    { label: "Standard CRM Setup", next: "final_workflow_crm" }
+                    { label: "Outdated Look", next: "final_brand_modern" },
+                    { label: "Pivot Strategy", next: "final_brand_pivot" }
                 ]
             },
-            systems_step2: {
-                question: "Type of infrastructure?",
+            brand_strat_step3: {
+                question: "Target Market?",
                 options: [
-                    { label: "Data Organization", next: "systems_step3_data" },
-                    { label: "CRM Logic", next: "systems_step3_crm" }
+                    { label: "B2B Corporate", next: "brand_strat_step4_b2b" },
+                    { label: "D2C Consumer", next: "brand_strat_step4_d2c" }
                 ]
             },
-            systems_step3_data: {
-                question: "Complexity?",
+            brand_strat_step4_b2b: {
+                question: "Goal?",
                 options: [
-                    { label: "Cloud Databases", next: "final_systems_cloud" },
-                    { label: "Local Structures", next: "final_systems_local" }
+                    { label: "Trust / Authority", next: "final_brand_auth" },
+                    { label: "Lead Gen", next: "final_brand_leads" }
                 ]
             },
-            website_step2: {
-                question: "Current status?",
+            brand_strat_step4_d2c: {
+                question: "Goal?",
                 options: [
-                    { label: "Start from Scratch", next: "website_step3_new" },
-                    { label: "Optimize Existing", next: "website_step3_opt" }
-                ]
-            },
-            website_step3_new: {
-                question: "Main objective?",
-                options: [
-                    { label: "E commerce Sales", next: "final_web_sales" },
-                    { label: "Brand Authority", next: "final_web_auth" }
+                    { label: "Viral Growth", next: "final_brand_viral" },
+                    { label: "Loyalty / LTV", next: "final_brand_loyalty" }
                 ]
             }
         };
 
         const finalServices = {
-            final_branding_redesign: { title: "Full Brand Redesign", body: "I need a complete visual overhaul for my brand to increase authority." },
-            final_branding_assets: { title: "New Asset Creation", body: "I need professionally engineered graphics for my upcoming campaign." },
-            final_workflow_auto: { title: "High Volume Automation", body: "I need an automated system to handle a high volume of incoming leads." },
-            final_workflow_crm: { title: "Standard CRM Strategy", body: "I need to set up a workflow to track and manage my current customers." },
-            final_systems_cloud: { title: "Cloud Data Systems", body: "I need a scalable cloud database architecture for my business data." },
-            final_systems_local: { title: "Internal Data Flow", body: "I need to organize our internal data structures for better efficiency." },
-            final_web_sales: { title: "Conversion Website", body: "I need a high performance e commerce site built to drive sales." },
-            final_web_auth: { title: "Authority Website", body: "I need a premium website that establishes me as the industry leader." }
+            // ADS
+            final_ads_starter: { title: "Growth Starter Pack", body: "I need a targeted ad strategy for a budget under $5k to prove ROI." },
+            final_ads_scale: { title: "High-Scale Ad Ops", body: "I need to scale my ad spend profitably across platforms." },
+            final_ads_creative: { title: "Creative + Ads", body: "I need high-converting ad creatives and media buying management." },
+            
+            // CONTENT
+            final_content_heavy: { title: "Volume Content Engine", body: "I need a system to produce and post daily video content." },
+            final_content_strat: { title: "Strategic Content", body: "I need high-value weekly content designed for thought leadership." },
+            final_seo_local: { title: "Local Domination", body: "I need to rank #1 in my local area for key search terms." },
+            final_seo_global: { title: "Global SEO Strategy", body: "I need an SEO strategy to compete for global keywords." },
+
+            // RECRUITMENT
+            final_recruitment_key: { title: "Headhunting", body: "I need to find specific, high-level talent for key roles." },
+            final_recruitment_vol: { title: "High-Volume Hiring", body: "I need a system to screen and hire multiple candidates quickly." },
+            final_recruitment_supp: { title: "Support Staff Hiring", body: "I need reliable entry-level or support staff sourced efficiently." },
+
+            // AUTOMATION
+            final_crm_migration: { title: "CRM Migration", body: "I need to move from spreadsheets to a proper CRM system." },
+            final_automation_simple: { title: "Sheet Automation", body: "I need to script and automate my existing spreadsheets." },
+            final_automation_api: { title: "Custom API Integration", body: "I need to connect different software tools via API." },
+            final_crm_opt: { title: "CRM Optimization", body: "I need to optimize workflows within my existing CRM." },
+
+            // DEV
+            final_web_sales: { title: "Conversion Store", body: "I need a fast Shopify store optimized for conversions." },
+            final_web_enterprise: { title: "Enterprise E-com", body: "I need a robust e-commerce solution for a large SKU catalog." },
+            final_web_auth: { title: "Authority Site", body: "I need a premium website to establish brand trust." },
+            final_web_funnel: { title: "Funnel Build", body: "I need a website specifically designed to capture leads." },
+            final_dev_internal: { title: "Internal Tools", body: "I need custom software to improve internal team efficiency." },
+            final_dev_saas: { title: "SaaS MVP Build", body: "I need to build and launch a Minimum Viable Product for a SaaS." },
+            final_dev_refactor: { title: "Code Refactor", body: "I need to clean up and optimize existing code for performance." },
+            final_dev_features: { title: "Feature Dev", body: "I need to add new complex features to an existing product." },
+
+            // BRANDING
+            final_brand_identity: { title: "Visual Identity", body: "I need a logo and color palette to start my brand." },
+            final_brand_system: { title: "Full Brand System", body: "I need a comprehensive design system for all brand touchpoints." },
+            final_brand_modern: { title: "Brand Modernization", body: "I need to update my outdated brand look." },
+            final_brand_pivot: { title: "Strategic Rebrand", body: "I need to rebrand to align with a new business direction." },
+            final_brand_auth: { title: "B2B Authority", body: "I need a brand strategy that builds trust with corporate clients." },
+            final_brand_leads: { title: "B2B Lead Gen Brand", body: "I need branding that supports aggressive lead generation." },
+            final_brand_viral: { title: "Viral Consumer Brand", body: "I need a brand designed for rapid social growth." },
+            final_brand_loyalty: { title: "Loyalty Brand", body: "I need a brand strategy focused on customer retention." }
         };
 
         let currentSelections = [];
 
         function renderFunnelStep(stepId) {
             const container = document.getElementById('funnel-container');
-            if (finalServices[stepId]) {
-                const service = finalServices[stepId];
-                const mailLink = `mailto:${myEmail}?subject=Service Request: ${service.title}&body=Hi Yanyan,%0D%0A%0D%0ASelected Path: ${currentSelections.join(' > ')}%0D%0A%0D%0A${service.body}%0D%0A%0D%0A${highVolumeNote}`;
-                container.innerHTML = `
-                    <div class="text-center funnel-step">
-                        <span class="text-[12px] font-bold uppercase tracking-widest text-gray-400 mb-6 block">Funnel Complete</span>
-                        <h3 class="text-5xl font-bold mb-10 uppercase tracking-tighter text-black md:text-white">${service.title}</h3>
-                        <p class="text-gray-500 mb-12 text-xl max-w-lg mx-auto leading-relaxed">Based on your selections we have identified the optimal strategy. Ready to deploy?</p>
-                        <div class="flex flex-col md:flex-row gap-6 justify-center">
-                            <a href="${mailLink}" class="bg-black md:bg-white text-white md:text-black px-16 py-6 text-[12px] font-bold uppercase tracking-[0.4em] hover:opacity-80 transition">Initiate Request</a>
-                            <button onclick="resetFunnel()" class="border border-black md:border-white px-16 py-6 text-[12px] font-bold uppercase tracking-[0.4em] hover:bg-black md:hover:bg-white hover:text-white md:hover:text-black transition">Restart Funnel</button>
+            
+            // Animation for transition
+            container.style.opacity = '0';
+            
+            setTimeout(() => {
+                if (finalServices[stepId]) {
+                    const service = finalServices[stepId];
+                    const mailLink = `mailto:${myEmail}?subject=Service Request: ${service.title}&body=Hi Yanyan,%0D%0A%0D%0ASelected Path: ${currentSelections.join(' > ')}%0D%0A%0D%0A${service.body}%0D%0A%0D%0A${highVolumeNote}`;
+                    container.innerHTML = `
+                        <div class="text-center funnel-step">
+                            <span class="text-[12px] font-bold uppercase tracking-widest text-gray-400 mb-6 block">Analysis Complete</span>
+                            <h3 class="text-3xl md:text-5xl font-bold mb-6 uppercase tracking-tighter text-black md:text-white leading-none">${service.title}</h3>
+                            <p class="text-gray-400 mb-10 text-lg max-w-lg mx-auto leading-relaxed">Diagnostic complete. We have identified the optimal engineering strategy for your goal.</p>
+                            <div class="flex flex-col md:flex-row gap-6 justify-center">
+                                <a href="${mailLink}" class="bg-white text-black px-12 py-5 text-[12px] font-bold uppercase tracking-[0.3em] hover:bg-gray-200 transition">Initiate Protocol</a>
+                                <button onclick="resetFunnel()" class="border border-white text-white px-12 py-5 text-[12px] font-bold uppercase tracking-[0.3em] hover:bg-white hover:text-black transition">Restart</button>
+                            </div>
                         </div>
-                    </div>
-                `;
-                return;
-            }
-            const step = funnelData[stepId] || funnelData.step1;
-            container.innerHTML = `
-                <div class="funnel-step">
-                    <p class="text-[12px] font-bold uppercase tracking-[0.5em] text-gray-500 mb-8">Step ${currentSelections.length + 1} of 4</p>
-                    <h3 class="text-4xl md:text-6xl font-bold mb-16 tracking-tight text-black md:text-white">${step.question}</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        ${step.options.map(opt => `
-                            <button onclick="handleSelection('${opt.label}', '${opt.next}')" class="p-10 border border-gray-800 hover:border-white text-left group transition-all bg-white md:bg-transparent">
-                                <span class="text-[12px] font-bold uppercase tracking-widest block mb-4 opacity-30 group-hover:opacity-100">Select Option</span>
-                                <span class="text-2xl font-bold uppercase tracking-tighter text-black md:text-white">${opt.label}</span>
-                            </button>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
+                    `;
+                } else {
+                    const step = funnelData[stepId] || funnelData.step1;
+                    container.innerHTML = `
+                        <div class="funnel-step w-full">
+                            <div class="flex justify-between items-center mb-10">
+                                <p class="text-[10px] font-bold uppercase tracking-[0.5em] text-gray-500">Step ${currentSelections.length + 1} / 4</p>
+                                <button onclick="resetFunnel()" class="text-[10px] uppercase text-gray-600 hover:text-white transition">Reset</button>
+                            </div>
+                            <h3 class="text-3xl md:text-5xl font-bold mb-12 tracking-tight text-white">${step.question}</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                ${step.options.map(opt => `
+                                    <button onclick="handleSelection('${opt.label}', '${opt.next}')" class="p-8 border border-white/20 hover:border-white hover:bg-white/5 text-left group transition-all duration-300">
+                                        <span class="text-[10px] font-bold uppercase tracking-widest block mb-3 text-gray-500 group-hover:text-gray-300">Select</span>
+                                        <span class="text-xl md:text-2xl font-bold uppercase tracking-tighter text-white">${opt.label}</span>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+                container.style.opacity = '1';
+            }, 300);
         }
 
         function handleSelection(label, next) {
@@ -483,6 +853,7 @@
         }
 
         renderFunnelStep('step1');
+        
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 if (this.getAttribute('href').startsWith('#')) {
