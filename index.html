@@ -3,83 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ian Harold Daluyen | Engineering and Marketing</title>
+    <title>Ian Harold Daluyen | Marketing Engineer & Growth Strategist</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --black: #000;
+            --white: #fff;
+            --gray-50: #f9f9f9;
+            --gray-100: #f2f2f2;
+            --gray-400: #999;
+            --gray-500: #6e6e73;
+        }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #ffffff;
-            color: #000000;
-            overflow-x: hidden;
-        }
-        h1, h2, h3, h4, .heading-font {
             font-family: 'Space Grotesk', sans-serif;
+            background: var(--white);
+            color: var(--black);
+            overflow-x: hidden;
+            cursor: none;
         }
-        
-        /* Revised Animation: Reversible */
+
+        ::selection { background: #000; color: #fff; }
+        ::-webkit-scrollbar { width: 0; }
+
+        /* ——— CURSOR ——— */
+        #cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #000;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width 0.25s, height 0.25s;
+            mix-blend-mode: difference;
+        }
+        #cursor-ring {
+            position: fixed;
+            width: 38px;
+            height: 38px;
+            border: 1.5px solid rgba(0,0,0,0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+        body.cursor-big #cursor { width: 56px; height: 56px; }
+        body.cursor-big #cursor-ring { opacity: 0; }
+
+        /* ——— SCROLL PROGRESS ——— */
+        #scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 2px;
+            background: #000;
+            z-index: 9998;
+            width: 0%;
+            transition: width 0.08s linear;
+        }
+
+        /* ——— NAV (pill / Apple style) ——— */
+        #main-nav {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 100px;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            transition: box-shadow 0.4s;
+        }
+        #main-nav.scrolled {
+            box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+        }
+        .nav-link {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--gray-500);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: var(--black); }
+
+        /* ——— MOBILE MENU ——— */
+        #mobile-menu {
+            position: fixed;
+            inset: 0;
+            background: var(--white);
+            z-index: 990;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2.5rem;
+            transform: translateY(-100%);
+            transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        #mobile-menu.open { transform: translateY(0); }
+        .mobile-link {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            text-decoration: none;
+            color: var(--black);
+        }
+
+        /* ——— ANIMATIONS ——— */
         .reveal {
             opacity: 0;
             transform: translateY(50px);
-            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        @keyframes scrollLTR {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        @keyframes scrollRTL {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        .reveal-left.active { opacity: 1; transform: translateX(0); }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        
-        .marquee-container {
+        .reveal-right.active { opacity: 1; transform: translateX(0); }
+
+        /* ——— HERO ——— */
+        .hero-section {
+            min-height: 100vh;
             display: flex;
-            width: max-content;
-            gap: 6rem;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 0 1.5rem;
         }
-        .animate-ltr { animation: scrollLTR 35s linear infinite; }
-        .animate-rtl { animation: scrollRTL 35s linear infinite; }
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            pointer-events: none;
+        }
+        .orb-1 {
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(0,0,0,0.04) 0%, transparent 70%);
+            top: -200px; right: -200px;
+            animation: float 10s ease-in-out infinite;
+        }
+        .orb-2 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(0,0,0,0.03) 0%, transparent 70%);
+            bottom: -150px; left: 5%;
+            animation: float 12s ease-in-out infinite 2s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-28px); }
+        }
 
-        .stat-value {
-            font-size: clamp(3.5rem, 12vw, 6rem);
-            font-weight: 800;
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            background: var(--gray-100);
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--gray-500);
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+        }
+        .badge-dot {
+            width: 7px; height: 7px;
+            background: #34c759;
+            border-radius: 50%;
+            animation: pulseDot 2s infinite;
+        }
+        @keyframes pulseDot {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(52,199,89,0.6); }
+            50% { box-shadow: 0 0 0 5px rgba(52,199,89,0); }
+        }
+
+        .hero-title { font-size: clamp(4rem, 10vw, 9.5rem); font-weight: 700; line-height: 0.93; letter-spacing: -0.035em; }
+        .hero-line { display: block; overflow: hidden; }
+        .hero-line span {
+            display: block;
+            animation: slideUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        .hero-line:nth-child(1) span { animation-delay: 0.15s; }
+        .hero-line:nth-child(2) span { animation-delay: 0.25s; }
+        .hero-line:nth-child(3) span { animation-delay: 0.35s; }
+
+        @keyframes slideUp {
+            from { transform: translateY(110%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeInDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hero-sub { animation: fadeIn 1s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both; }
+        .hero-cta { animation: fadeIn 1s cubic-bezier(0.22, 1, 0.36, 1) 0.75s both; }
+        .hero-img-wrap { animation: fadeIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both; }
+
+        .exp-badge {
+            position: absolute;
+            bottom: -1.5rem;
+            right: -1.5rem;
+            background: #000;
+            color: #fff;
+            padding: 1.25rem 1.75rem;
+            border-radius: 1.25rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+
+        /* ——— MARQUEE ——— */
+        @keyframes marqueeLTR {
+            from { transform: translateX(-50%); }
+            to   { transform: translateX(0); }
+        }
+        @keyframes marqueeRTL {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+        .marquee-track { display: flex; width: max-content; }
+        .anim-ltr { animation: marqueeLTR 32s linear infinite; }
+        .anim-rtl { animation: marqueeRTL 28s linear infinite; }
+
+        /* ——— STATS ——— */
+        .stat-num {
+            font-size: clamp(4rem, 10vw, 7rem);
+            font-weight: 700;
             line-height: 1;
+            letter-spacing: -0.04em;
+            font-variant-numeric: tabular-nums;
         }
 
-        .hero-gradient {
-            background: radial-gradient(circle at 50% 50%, #fafafa 0%, #ffffff 100%);
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #ffffff; }
-        ::-webkit-scrollbar-thumb { background: #000000; }
-
-        .funnel-step {
-            transition: opacity 0.4s ease, transform 0.4s ease;
-        }
-        
-        .software-tag {
-            white-space: nowrap;
-        }
+        /* ——— CARDS ——— */
+        .tilt-card { transform-style: preserve-3d; transition: box-shadow 0.3s ease; }
+        .client-card { transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+        .client-card:hover { transform: translateY(-8px); }
 
         .industry-card {
-            border: 1px solid #f0f0f0;
-            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-            position: relative;
+            border: 1px solid #ebebeb;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        .industry-card:hover {
-            border-color: #000000;
-            background-color: #fafafa;
-            transform: translateY(-5px);
+        .industry-card:hover { border-color: #000; background: #fafafa; }
+
+        /* ——— TIMELINE ——— */
+        .tl-item { position: relative; padding-left: 2rem; }
+        .tl-item::before {
+            content: '';
+            position: absolute; left: 0; top: 7px;
+            width: 9px; height: 9px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            background: #fff;
+        }
+        .tl-item::after {
+            content: '';
+            position: absolute; left: 4px; top: 20px;
+            width: 1px;
+            height: calc(100% + 2.5rem);
+            background: linear-gradient(to bottom, #000 0%, transparent 100%);
+        }
+        .tl-item:last-child::after { display: none; }
+
+        /* ——— SKILL BARS ——— */
+        .skill-track { height: 2px; background: #e5e5e5; position: relative; overflow: hidden; border-radius: 2px; }
+        .skill-fill {
+            position: absolute; left: 0; top: 0; bottom: 0;
+            background: #000;
+            width: 0;
+            transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+            border-radius: 2px;
         }
 
+        /* ——— HOVER MASK ——— */
         .hover-mask {
             position: relative;
             overflow: hidden;
@@ -87,781 +314,942 @@
         }
         .hover-mask::after {
             content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute; inset: 0;
             background: #000;
-            transform: translateY(100%);
-            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: translateY(101%);
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
             z-index: -1;
         }
-        .hover-mask:hover::after {
-            transform: translateY(0);
-        }
-        .hover-mask:hover {
-            color: #fff;
-        }
+        .hover-mask:hover::after { transform: translateY(0); }
+        .hover-mask:hover { color: #fff; }
 
-        .hero-image-container {
-            position: relative;
-            transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .hero-image-container:hover {
-            transform: scale(1.02);
-        }
-        
-        .client-logo-text {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            letter-spacing: -0.05em;
-        }
-        
-        .country-pill {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            border: 1px solid #e5e5e5;
-            border-radius: 9999px;
-            font-size: 0.875rem;
+        /* ——— SECTION LABEL ——— */
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.28em;
+            color: var(--gray-500);
+            margin-bottom: 1.25rem;
+        }
+        .section-label::before {
+            content: '';
+            display: block;
+            width: 28px; height: 1px;
+            background: currentColor;
+            flex-shrink: 0;
+        }
+
+        /* ——— COUNTRY PILL ——— */
+        .country-pill {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
             transition: all 0.3s ease;
+            cursor: default;
         }
-        .country-pill:hover {
-            border-color: #000;
-            background-color: #000;
-            color: #fff;
+        .country-pill:hover { border-color: #000; background: #000; color: #fff; }
+
+        /* ——— CERT CARD ——— */
+        .cert-card {
+            border: 1px solid #e5e5e5;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            display: block;
+            text-decoration: none;
         }
+        .cert-card:hover { border-color: #000; transform: translateY(-5px); box-shadow: 0 24px 48px rgba(0,0,0,0.07); }
+
+        /* ——— FUNNEL ——— */
+        #funnel-container { transition: opacity 0.3s ease; }
+        .funnel-btn {
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+            text-align: left;
+            padding: 1.75rem 2rem;
+        }
+        .funnel-btn:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); }
+
+        /* ——— CONTACT BG ——— */
+        .contact-bg {
+            position: absolute; inset: 0; z-index: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 50%, #f5f5f7 0%, transparent 70%);
+        }
+
+        /* ——— MAGNETIC ——— */
+        .btn-mag { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
     </style>
 </head>
-<body class="selection:bg-black selection:text-white">
+<body>
 
-    <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
-            <span class="text-2xl font-extrabold tracking-tighter hover:tracking-widest transition-all duration-500 cursor-pointer">IHD.</span>
-            <div class="hidden md:flex gap-8 text-[11px] font-bold uppercase tracking-[0.2em]">
-                <a href="#about" class="hover:text-gray-500 transition">About</a>
-                <a href="#clients" class="hover:text-gray-500 transition">Clients</a>
-                <a href="#experience" class="hover:text-gray-500 transition">Expertise</a>
-                <a href="#matchmaker" class="hover:text-gray-500 transition">Funnel</a>
-                <a href="#certifications" class="hover:text-gray-500 transition">Certs</a>
-                <a href="https://www.linkedin.com/in/ian-harold-cosyao-daluyen-26295b325/" target="_blank" class="bg-black text-white px-4 py-2 hover:bg-gray-800 transition">LinkedIn</a>
-            </div>
+    <!-- Cursor -->
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- Scroll progress -->
+    <div id="scroll-progress"></div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu">
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#clients" class="mobile-link">Work</a>
+        <a href="#experience" class="mobile-link">Expertise</a>
+        <a href="#matchmaker" class="mobile-link">Funnel</a>
+        <a href="#certifications" class="mobile-link">Certs</a>
+        <a href="https://www.linkedin.com/in/ian-harold-cosyao-daluyen-26295b325/" target="_blank" class="mobile-link" style="color:#6e6e73">LinkedIn ↗</a>
+        <button id="close-menu" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;color:#aaa;margin-top:1rem;background:none;border:none;cursor:none;">Close</button>
+    </div>
+
+    <!-- NAV -->
+    <nav id="main-nav">
+        <a href="#about" style="font-size:1.1rem;font-weight:700;letter-spacing:-0.02em;text-decoration:none;color:#000;">IHD.</a>
+        <div class="hidden md:flex items-center gap-6">
+            <a href="#about" class="nav-link">About</a>
+            <a href="#clients" class="nav-link">Work</a>
+            <a href="#experience" class="nav-link">Expertise</a>
+            <a href="#matchmaker" class="nav-link">Funnel</a>
+            <a href="#certifications" class="nav-link">Certs</a>
         </div>
+        <a href="https://www.linkedin.com/in/ian-harold-cosyao-daluyen-26295b325/" target="_blank"
+           class="hidden md:inline-block text-white bg-black rounded-full px-5 py-2.5 nav-link" style="color:#fff;letter-spacing:0.12em;">LinkedIn ↗</a>
+        <button id="hamburger" class="md:hidden flex flex-col gap-1.5 bg-none border-none" style="cursor:none;" aria-label="Menu">
+            <span style="display:block;width:22px;height:2px;background:#000;border-radius:2px;"></span>
+            <span style="display:block;width:22px;height:2px;background:#000;border-radius:2px;"></span>
+        </button>
     </nav>
 
-    <!-- Reduced top padding here -->
-    <main class="pt-0"> 
-        <!-- Hero Section -->
-        <section id="about" class="px-6 hero-gradient relative pt-48 pb-32">
-            <div class="max-w-7xl mx-auto w-full">
-                <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-                    <!-- Left Column: Text -->
-                    <div class="reveal">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="h-[1px] w-12 bg-black"></div>
-                            <p class="text-[11px] uppercase tracking-[0.4em] font-bold text-gray-500">Marketing Strategy & Engineering Precision</p>
+    <main>
+
+        <!-- ═══════════════ HERO ═══════════════ -->
+        <section id="about" class="hero-section">
+            <div class="hero-orb orb-1"></div>
+            <div class="hero-orb orb-2"></div>
+
+            <div style="max-width:80rem;margin:0 auto;width:100%;position:relative;z-index:1;padding-top:6rem;">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+                    <!-- Text -->
+                    <div>
+                        <div class="hero-badge">
+                            <span class="badge-dot"></span>
+                            Available for Senior Roles
                         </div>
-                        <h1 class="text-6xl md:text-8xl font-extrabold leading-[0.9] tracking-tighter mb-8">
-                            Ian Harold <br> Daluyen
+
+                        <h1 class="hero-title" style="margin-bottom:2rem;">
+                            <span class="hero-line"><span>Ian</span></span>
+                            <span class="hero-line"><span>Harold</span></span>
+                            <span class="hero-line"><span>Daluyen.</span></span>
                         </h1>
-                        <p class="text-xl md:text-2xl text-gray-500 leading-tight font-light max-w-xl mb-10">
-                            I treat every digital project as a high-performance system. No fake promises—just engineered results.
+
+                        <p class="hero-sub" style="font-size:clamp(1.1rem,2.5vw,1.4rem);color:#6e6e73;line-height:1.5;max-width:28rem;margin-bottom:2.5rem;font-weight:300;">
+                            10+ years engineering marketing systems that drive revenue. Not just strategies — precision-built machines.
                         </p>
-                        
-                        <div class="flex flex-col sm:flex-row gap-6">
-                            <a href="#matchmaker" class="hover-mask inline-flex justify-center items-center border-2 border-black px-10 py-5 text-[12px] font-bold uppercase tracking-[0.2em] transition-all">
-                                Start the Funnel
+
+                        <div class="hero-cta" style="display:flex;flex-wrap:wrap;gap:1rem;">
+                            <a href="#matchmaker" class="hover-mask btn-mag" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #000;padding:1.1rem 2.2rem;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;text-decoration:none;color:#000;">
+                                Find Your Solution
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+                            <a href="mailto:ianharoldcosyaodaluyen@gmail.com" class="btn-mag" style="display:inline-flex;align-items:center;gap:8px;padding:1.1rem 2rem;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;text-decoration:none;color:#6e6e73;transition:color 0.2s;">
+                                Get in Touch ↗
                             </a>
                         </div>
                     </div>
-                    
-                    <!-- Right Column: Image -->
-                    <div class="reveal relative" style="transition-delay: 0.2s">
-                        <div class="hero-image-container">
-                            <img src="https://i.ibb.co/XrmRfJjM/Porfolioom-image.png" alt="Ian Harold Daluyen" class="w-full max-w-md mx-auto lg:max-w-full h-auto object-cover rounded-sm shadow-xl">
-                            <!-- Geometric Accent -->
-                            <div class="absolute -top-6 -right-6 w-24 h-24 border-t-4 border-r-4 border-black hidden md:block"></div>
-                            <div class="absolute -bottom-6 -left-6 w-24 h-24 border-b-4 border-l-4 border-black hidden md:block"></div>
+
+                    <!-- Image -->
+                    <div class="hero-img-wrap" style="position:relative;">
+                        <div style="position:relative;max-width:32rem;margin:0 auto;">
+                            <img src="https://i.ibb.co/XrmRfJjM/Porfolioom-image.png"
+                                 alt="Ian Harold Daluyen"
+                                 style="width:100%;height:auto;object-fit:cover;border-radius:1.5rem;box-shadow:0 40px 100px rgba(0,0,0,0.15);">
+                            <!-- Corner accents -->
+                            <div class="hidden lg:block" style="position:absolute;top:-1rem;right:-1rem;width:5rem;height:5rem;border-top:3px solid #000;border-right:3px solid #000;border-top-right-radius:1rem;"></div>
+                            <div class="hidden lg:block" style="position:absolute;bottom:-1rem;left:-1rem;width:5rem;height:5rem;border-bottom:3px solid #000;border-left:3px solid #000;border-bottom-left-radius:1rem;"></div>
+                            <!-- Floating badge -->
+                            <div class="exp-badge hidden lg:block">
+                                <p style="font-size:2.25rem;font-weight:700;letter-spacing:-0.04em;line-height:1;">10+</p>
+                                <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:#888;margin-top:2px;">Yrs. Exp.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Marquee Tools -->
-        <section class="py-12 border-y border-gray-100 overflow-hidden bg-white">
-            <div class="flex flex-col gap-8">
-                <div class="flex overflow-hidden opacity-30 hover:opacity-100 transition-opacity duration-500">
-                    <div class="marquee-container animate-ltr">
-                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">HighLevel</span>
-                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">HubSpot</span>
-                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">CapCut</span>
-                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">DaVinci Resolve</span>
-                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">ClickUp</span>
-                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">Figma</span>
-                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">Affinity</span>
-                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">Adobe CC</span>
-                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">Firebase</span>
-                        <span class="software-tag text-2xl md:text-4xl font-extrabold tracking-tighter uppercase">Google Ads</span>
+        <!-- ═══════════════ MARQUEE ═══════════════ -->
+        <section style="padding:4rem 0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;overflow:hidden;background:#fff;">
+            <div style="display:flex;flex-direction:column;gap:1.5rem;">
+                <!-- Row 1: LTR -->
+                <div style="overflow:hidden;opacity:0.35;transition:opacity 0.6s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.35'">
+                    <div class="marquee-track anim-ltr">
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">HighLevel</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">HubSpot</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">CapCut</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">DaVinci Resolve</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">ClickUp</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Figma</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Affinity</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Adobe CC</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Firebase</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Google Ads</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Meta Ads</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Zapier</span>
+                        <!-- duplicate -->
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">HighLevel</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">HubSpot</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">CapCut</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">DaVinci Resolve</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">ClickUp</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Figma</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Affinity</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Adobe CC</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Firebase</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Google Ads</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Meta Ads</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;margin:0 2.5rem;">Zapier</span>
+                    </div>
+                </div>
+                <!-- Row 2: RTL -->
+                <div style="overflow:hidden;opacity:0.15;transition:opacity 0.6s;" onmouseenter="this.style.opacity='0.7'" onmouseleave="this.style.opacity='0.15'">
+                    <div class="marquee-track anim-rtl">
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Shopify</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Webflow</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">WordPress</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Notion</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Airtable</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Make.com</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Semrush</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Ahrefs</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Monday.com</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Slack</span>
+                        <!-- duplicate -->
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Shopify</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Webflow</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">WordPress</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Notion</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Airtable</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Make.com</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Semrush</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Ahrefs</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Monday.com</span>
+                        <span style="white-space:nowrap;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;letter-spacing:-0.02em;text-transform:uppercase;margin:0 2rem;color:#999;">Slack</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- TRUSTED BY / WORK HISTORY -->
-        <section id="clients" class="py-32 px-6 bg-black text-white">
-            <div class="max-w-7xl mx-auto">
-                <div class="flex flex-col md:flex-row justify-between items-end mb-20 reveal">
+        <!-- ═══════════════ STATS ═══════════════ -->
+        <section id="metrics" style="padding:7rem 1.5rem;background:#000;color:#fff;">
+            <div style="max-width:80rem;margin:0 auto;">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-12">
+                    <div class="reveal" style="border-left:1px solid rgba(255,255,255,0.15);padding-left:2rem;">
+                        <p class="stat-num counter" data-target="10" data-suffix="+">0</p>
+                        <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.25em;margin-top:1rem;color:#666;font-weight:600;">Years Experience</p>
+                    </div>
+                    <div class="reveal" style="border-left:1px solid rgba(255,255,255,0.15);padding-left:2rem;transition-delay:0.08s">
+                        <p class="stat-num counter" data-target="67" data-suffix="">0</p>
+                        <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.25em;margin-top:1rem;color:#666;font-weight:600;">Projects Shipped</p>
+                    </div>
+                    <div class="reveal" style="border-left:1px solid rgba(255,255,255,0.15);padding-left:2rem;transition-delay:0.16s">
+                        <p class="stat-num counter" data-target="93" data-suffix="%">0</p>
+                        <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.25em;margin-top:1rem;color:#666;font-weight:600;">Client Approval Rate</p>
+                    </div>
+                    <div class="reveal" style="border-left:1px solid rgba(255,255,255,0.15);padding-left:2rem;transition-delay:0.24s">
+                        <p class="stat-num counter" data-target="7" data-suffix="">0</p>
+                        <p style="font-size:11px;text-transform:uppercase;letter-spacing:0.25em;margin-top:1rem;color:#666;font-weight:600;">Countries Served</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ WORK HISTORY ═══════════════ -->
+        <section id="clients" style="padding:7rem 1.5rem;">
+            <div style="max-width:80rem;margin:0 auto;">
+                <div class="flex flex-col md:flex-row justify-between items-end reveal" style="margin-bottom:4rem;">
                     <div>
-                        <p class="text-[10px] uppercase tracking-[0.5em] mb-4 text-gray-400 font-bold">Work History & Collaborations</p>
-                        <h2 class="text-4xl md:text-6xl font-bold tracking-tighter">Engineering Trust.</h2>
+                        <p class="section-label">Work History & Collaborations</p>
+                        <h2 style="font-size:clamp(2.5rem,7vw,5.5rem);font-weight:700;letter-spacing:-0.035em;line-height:1;">Engineering<br>Trust.</h2>
                     </div>
-                    <div class="mt-8 md:mt-0 text-right">
-                        <p class="text-gray-400 max-w-sm ml-auto">
-                            Partnering with global entities to streamline operations and amplify digital reach.
-                        </p>
-                    </div>
+                    <p style="color:#6e6e73;max-width:22rem;margin-top:2rem;font-size:1.05rem;line-height:1.6;">Partnering with global companies to streamline operations and amplify digital reach.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <!-- Amazon -->
-                    <div class="reveal border border-white/20 p-10 flex flex-col justify-between h-80 hover:bg-white/10 transition-colors">
-                        <span class="text-4xl client-logo-text">amazon</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div class="reveal tilt-card client-card" style="background:#000;color:#fff;padding:2.5rem;display:flex;flex-direction:column;justify-content:space-between;min-height:17rem;border-radius:1rem;">
+                        <span style="font-size:2.25rem;font-weight:700;letter-spacing:-0.03em;">amazon</span>
                         <div>
-                            <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Role</p>
-                            <p class="font-bold">Marketing & Training Manager</p>
+                            <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.25em;color:#555;margin-bottom:0.3rem;">Position</p>
+                            <p style="font-weight:700;font-size:1rem;">Marketing & Training Manager</p>
                         </div>
                     </div>
-
-                    <!-- T-Mobile -->
-                    <div class="reveal border border-white/20 p-10 flex flex-col justify-between h-80 hover:bg-white/10 transition-colors" style="transition-delay: 0.1s">
-                        <span class="text-4xl client-logo-text tracking-tighter">T-Mobile</span>
+                    <div class="reveal tilt-card client-card" style="background:#E20074;color:#fff;padding:2.5rem;display:flex;flex-direction:column;justify-content:space-between;min-height:17rem;border-radius:1rem;transition-delay:0.08s">
+                        <span style="font-size:2.25rem;font-weight:700;letter-spacing:-0.04em;">T-Mobile</span>
                         <div>
-                            <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Role</p>
-                            <p class="font-bold">Marketing Lead Specialist</p>
+                            <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.25em;color:rgba(255,255,255,0.55);margin-bottom:0.3rem;">Position</p>
+                            <p style="font-weight:700;font-size:1rem;">Marketing Lead Specialist</p>
                         </div>
                     </div>
-
-                    <!-- Sphere Rocket -->
-                    <div class="reveal border border-white/20 p-10 flex flex-col justify-between h-80 hover:bg-white/10 transition-colors" style="transition-delay: 0.2s">
-                        <span class="text-3xl client-logo-text">Sphere Rocket</span>
+                    <div class="reveal tilt-card client-card" style="border:1px solid #e5e5e5;padding:2.5rem;display:flex;flex-direction:column;justify-content:space-between;min-height:17rem;border-radius:1rem;transition-delay:0.16s">
+                        <span style="font-size:2rem;font-weight:700;line-height:1.15;">Sphere<br>Rocket</span>
                         <div>
-                            <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Role</p>
-                            <p class="font-bold">Digital Marketing Manager</p>
+                            <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.25em;color:#aaa;margin-bottom:0.3rem;">Position</p>
+                            <p style="font-weight:700;font-size:1rem;">Digital Marketing Manager</p>
                         </div>
                     </div>
-
-                    <!-- Refugee Archive -->
-                    <div class="reveal border border-white/20 p-10 flex flex-col justify-between h-80 hover:bg-white/10 transition-colors" style="transition-delay: 0.3s">
-                        <span class="text-3xl client-logo-text leading-none">The Refugee<br>Archive</span>
+                    <div class="reveal tilt-card client-card" style="border:1px solid #e5e5e5;padding:2.5rem;display:flex;flex-direction:column;justify-content:space-between;min-height:17rem;border-radius:1rem;transition-delay:0.24s">
+                        <span style="font-size:1.6rem;font-weight:700;line-height:1.25;">The Refugee<br>Archive</span>
                         <div>
-                            <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Role</p>
-                            <p class="font-bold">Social Media Manager</p>
+                            <p style="font-size:10px;text-transform:uppercase;letter-spacing:0.25em;color:#aaa;margin-bottom:0.3rem;">Position</p>
+                            <p style="font-weight:700;font-size:1rem;">Social Media Manager</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- NEW SECTION: GLOBAL REACH -->
-        <section class="py-24 px-6 border-b border-gray-100">
-            <div class="max-w-7xl mx-auto text-center">
+        <!-- ═══════════════ GLOBAL REACH ═══════════════ -->
+        <section style="padding:6rem 1.5rem;background:#f9f9f9;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;">
+            <div style="max-width:80rem;margin:0 auto;text-align:center;">
                 <div class="reveal">
-                    <p class="text-[11px] uppercase tracking-[0.4em] font-bold text-gray-500 mb-6">International Scope</p>
-                    <h3 class="text-3xl md:text-5xl font-bold mb-12 tracking-tight">Countries I have direct experience working with</h3>
-                    <div class="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
-                        <span class="country-pill">USA</span>
-                        <span class="country-pill">Nigeria</span>
-                        <span class="country-pill">Bangladesh</span>
-                        <span class="country-pill">Canada</span>
-                        <span class="country-pill">India</span>
-                        <span class="country-pill">Australia</span>
-                        <span class="country-pill">France</span>
+                    <p class="section-label" style="justify-content:center;">International Scope</p>
+                    <h3 style="font-size:clamp(2rem,5vw,4rem);font-weight:700;letter-spacing:-0.03em;margin-bottom:3rem;">Countries I've Directly Worked With</h3>
+                    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;max-width:50rem;margin:0 auto;">
+                        <span class="country-pill">🇺🇸 USA</span>
+                        <span class="country-pill">🇳🇬 Nigeria</span>
+                        <span class="country-pill">🇧🇩 Bangladesh</span>
+                        <span class="country-pill">🇨🇦 Canada</span>
+                        <span class="country-pill">🇮🇳 India</span>
+                        <span class="country-pill">🇦🇺 Australia</span>
+                        <span class="country-pill">🇫🇷 France</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Industry Vertical Experience -->
-        <section id="experience" class="py-40 px-6">
-            <div class="max-w-7xl mx-auto">
-                <div class="flex flex-col md:flex-row justify-between items-end mb-24 reveal">
+        <!-- ═══════════════ CAREER TIMELINE ═══════════════ -->
+        <section style="padding:7rem 1.5rem;">
+            <div style="max-width:80rem;margin:0 auto;">
+                <div class="grid md:grid-cols-2 gap-20 items-start">
+                    <div class="reveal-left" style="position:sticky;top:8rem;">
+                        <p class="section-label">Career Progression</p>
+                        <h2 style="font-size:clamp(2.5rem,6vw,5rem);font-weight:700;letter-spacing:-0.035em;line-height:1.05;margin-bottom:1.5rem;">10 Years.<br>One Mission.</h2>
+                        <p style="color:#6e6e73;font-size:1.1rem;line-height:1.65;max-width:22rem;">From aeronautical engineering precision to leading digital marketing at global brands — every year has been intentional.</p>
+                    </div>
+                    <div class="reveal-right" style="display:flex;flex-direction:column;gap:3rem;">
+                        <div class="tl-item" style="padding-bottom:3rem;">
+                            <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#aaa;margin-bottom:0.5rem;">Present</p>
+                            <h3 style="font-size:1.5rem;font-weight:700;margin-bottom:0.4rem;">Marketing & Training Manager</h3>
+                            <p style="font-weight:600;color:#6e6e73;margin-bottom:0.75rem;">Amazon</p>
+                            <p style="color:#999;line-height:1.65;">Leading cross-functional marketing programs, training teams on CRM systems, and managing digital campaigns at enterprise scale across international markets.</p>
+                        </div>
+                        <div class="tl-item" style="padding-bottom:3rem;">
+                            <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#aaa;margin-bottom:0.5rem;">Previous</p>
+                            <h3 style="font-size:1.5rem;font-weight:700;margin-bottom:0.4rem;">Marketing Lead Specialist</h3>
+                            <p style="font-weight:600;color:#6e6e73;margin-bottom:0.75rem;">T-Mobile</p>
+                            <p style="color:#999;line-height:1.65;">Spearheaded high-impact marketing initiatives, customer acquisition strategies, and brand campaigns driving measurable revenue growth at a national scale.</p>
+                        </div>
+                        <div class="tl-item" style="padding-bottom:3rem;">
+                            <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#aaa;margin-bottom:0.5rem;">Previous</p>
+                            <h3 style="font-size:1.5rem;font-weight:700;margin-bottom:0.4rem;">Digital Marketing Manager</h3>
+                            <p style="font-weight:600;color:#6e6e73;margin-bottom:0.75rem;">Sphere Rocket</p>
+                            <p style="color:#999;line-height:1.65;">Built end-to-end digital marketing systems including high-conversion funnels, automation workflows, and paid media strategy across multiple client verticals.</p>
+                        </div>
+                        <div class="tl-item">
+                            <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#aaa;margin-bottom:0.5rem;">Foundation</p>
+                            <h3 style="font-size:1.5rem;font-weight:700;margin-bottom:0.4rem;">Social Media Manager</h3>
+                            <p style="font-weight:600;color:#6e6e73;margin-bottom:0.75rem;">The Refugee Archive</p>
+                            <p style="color:#999;line-height:1.65;">Managed social presence and community strategy for a global humanitarian non-profit, building awareness across 7 countries.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ INDUSTRY EXPERTISE ═══════════════ -->
+        <section id="experience" style="padding:7rem 1.5rem;background:#000;color:#fff;">
+            <div style="max-width:80rem;margin:0 auto;">
+                <div class="flex flex-col md:flex-row justify-between items-end reveal" style="margin-bottom:4rem;">
                     <div>
-                        <p class="text-[10px] uppercase tracking-[0.5em] mb-4 text-gray-400 font-bold">Diverse Portfolio</p>
-                        <h2 class="text-5xl md:text-7xl font-bold tracking-tighter">Industry Expertise</h2>
+                        <p class="section-label" style="color:#555;">Diverse Portfolio</p>
+                        <h2 style="font-size:clamp(2.5rem,7vw,5.5rem);font-weight:700;letter-spacing:-0.035em;line-height:1;color:#fff;">Industry<br>Expertise</h2>
                     </div>
-                    <p class="text-gray-400 text-lg max-w-sm mt-8 md:mt-0">Applying engineering logic and SEO strategy across multiple sectors to drive results.</p>
+                    <p style="color:#666;max-width:22rem;margin-top:2rem;font-size:1.05rem;line-height:1.6;">Applying engineering logic and SEO strategy across sectors to drive measurable results.</p>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-8">
-                    <!-- Real Estate -->
-                    <div class="industry-card p-12 reveal">
-                        <h3 class="text-3xl font-bold mb-6 uppercase tracking-tight">Real Estate</h3>
-                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Architecting high-conversion lead generation funnels and CRM automation for property developers and brokerage firms. Implementing targeted SEO strategy for localized property search dominance.</p>
-                        <div class="flex flex-wrap gap-4">
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">GHL Funnels</span>
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">SEO Strategy</span>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div class="reveal industry-card tilt-card" style="padding:2.5rem;border-color:rgba(255,255,255,0.1);transition-delay:0s">
+                        <div style="font-size:2rem;margin-bottom:1.25rem;">🏗️</div>
+                        <h3 style="font-size:1.4rem;font-weight:700;margin-bottom:0.75rem;letter-spacing:-0.02em;color:#fff;">Real Estate</h3>
+                        <p style="color:#666;line-height:1.65;margin-bottom:1.5rem;font-size:0.95rem;">High-conversion lead generation funnels and CRM automation for property developers and brokerage firms.</p>
+                        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                            <span style="font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:#fff;">GHL Funnels</span>
+                            <span style="font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:#fff;">SEO</span>
                         </div>
                     </div>
-
-                    <!-- Humanitarian -->
-                    <div class="industry-card p-12 reveal" style="transition-delay: 0.1s">
-                        <div class="flex justify-between items-start mb-6">
-                            <h3 class="text-3xl font-bold uppercase tracking-tight">Humanitarian</h3>
-                            <span class="bg-black text-white text-[8px] font-bold px-2 py-1 uppercase tracking-widest">Non-Profit</span>
-                        </div>
-                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Developing digital strategies for non-profit organizations to increase awareness and streamline donation workflows. Specializing in free consultation and discounts for verified social impact initiatives.</p>
-                        <div class="flex flex-wrap gap-4">
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Donation Ops</span>
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Awareness</span>
+                    <div class="reveal industry-card tilt-card" style="padding:2.5rem;border-color:rgba(255,255,255,0.1);transition-delay:0.06s">
+                        <div style="font-size:2rem;margin-bottom:1.25rem;">🌍</div>
+                        <h3 style="font-size:1.4rem;font-weight:700;margin-bottom:0.75rem;letter-spacing:-0.02em;color:#fff;">Humanitarian</h3>
+                        <p style="color:#666;line-height:1.65;margin-bottom:1.5rem;font-size:0.95rem;">Digital strategies for non-profits to increase awareness and streamline donation workflows at global scale.</p>
+                        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                            <span style="font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:#fff;">Non-Profit</span>
+                            <span style="font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:#fff;">Awareness</span>
                         </div>
                     </div>
-
-                    <!-- Recruitment & Talent -->
-                    <div class="industry-card p-12 reveal" style="transition-delay: 0.2s">
-                        <h3 class="text-3xl font-bold mb-6 uppercase tracking-tight">Talent & Recruitment</h3>
-                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Streamlining the hiring pipeline with automated Applicant Tracking Systems (ATS) and outreach sequences. Reducing time-to-hire through engineered workflow automation.</p>
-                        <div class="flex flex-wrap gap-4">
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">ATS Automation</span>
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Sourcing</span>
+                    <div class="reveal industry-card tilt-card" style="padding:2.5rem;border-color:rgba(255,255,255,0.1);transition-delay:0.12s">
+                        <div style="font-size:2rem;margin-bottom:1.25rem;">🎯</div>
+                        <h3 style="font-size:1.4rem;font-weight:700;margin-bottom:0.75rem;letter-spacing:-0.02em;color:#fff;">Talent & Recruitment</h3>
+                        <p style="color:#666;line-height:1.65;margin-bottom:1.5rem;font-size:0.95rem;">Automated ATS systems and outreach sequences that reduce time-to-hire through engineered workflow automation.</p>
+                        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                            <span style="font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:#fff;">ATS</span>
+                            <span style="font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:#fff;">Sourcing</span>
                         </div>
                     </div>
-
-                    <!-- Automation & Integration -->
-                    <div class="industry-card p-12 reveal" style="transition-delay: 0.3s">
-                        <h3 class="text-3xl font-bold mb-6 uppercase tracking-tight">Automation</h3>
-                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Connecting disparate software ecosystems using custom API integrations and logic. Removing manual data entry to create self-sustaining operational loops.</p>
-                        <div class="flex flex-wrap gap-4">
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Zapier / Make</span>
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">API Logic</span>
+                    <div class="reveal industry-card tilt-card" style="padding:2.5rem;border-color:rgba(255,255,255,0.1);transition-delay:0.18s">
+                        <div style="font-size:2rem;margin-bottom:1.25rem;">⚙️</div>
+                        <h3 style="font-size:1.4rem;font-weight:700;margin-bottom:0.75rem;letter-spacing:-0.02em;color:#fff;">Automation & Integration</h3>
+                        <p style="color:#666;line-height:1.65;margin-bottom:1.5rem;font-size:0.95rem;">Custom API integrations connecting disparate software ecosystems into self-sustaining operational loops.</p>
+                        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                            <span style="font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:#fff;">Zapier / Make</span>
+                            <span style="font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:#fff;">API</span>
                         </div>
                     </div>
-
-                    <!-- Paid Ads -->
-                    <div class="industry-card p-12 reveal" style="transition-delay: 0.4s">
-                        <h3 class="text-3xl font-bold mb-6 uppercase tracking-tight">Paid Advertising</h3>
-                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Engineering high-ROAS campaigns across Meta and Google. utilizing data-driven audience segmentation and retargeting algorithms to maximize ad spend efficiency.</p>
-                        <div class="flex flex-wrap gap-4">
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Meta Ads</span>
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Google Ads</span>
+                    <div class="reveal industry-card tilt-card" style="padding:2.5rem;border-color:rgba(255,255,255,0.1);transition-delay:0.24s">
+                        <div style="font-size:2rem;margin-bottom:1.25rem;">📈</div>
+                        <h3 style="font-size:1.4rem;font-weight:700;margin-bottom:0.75rem;letter-spacing:-0.02em;color:#fff;">Paid Advertising</h3>
+                        <p style="color:#666;line-height:1.65;margin-bottom:1.5rem;font-size:0.95rem;">High-ROAS campaigns across Meta and Google using data-driven audience segmentation and retargeting algorithms.</p>
+                        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                            <span style="font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:#fff;">Meta Ads</span>
+                            <span style="font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:#fff;">Google Ads</span>
                         </div>
                     </div>
-
-                    <!-- Software Development -->
-                    <div class="industry-card p-12 reveal" style="transition-delay: 0.5s">
-                        <h3 class="text-3xl font-bold mb-6 uppercase tracking-tight">Software Dev</h3>
-                        <p class="text-gray-500 leading-relaxed text-lg mb-8">Building robust web infrastructures and custom software solutions. Focusing on scalability, clean code architecture, and seamless user experiences.</p>
-                        <div class="flex flex-wrap gap-4">
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">Full Stack</span>
-                            <span class="text-[10px] font-bold border border-black/10 px-3 py-1 uppercase tracking-widest text-black">SaaS</span>
+                    <div class="reveal industry-card tilt-card" style="padding:2.5rem;border-color:rgba(255,255,255,0.1);transition-delay:0.3s">
+                        <div style="font-size:2rem;margin-bottom:1.25rem;">💻</div>
+                        <h3 style="font-size:1.4rem;font-weight:700;margin-bottom:0.75rem;letter-spacing:-0.02em;color:#fff;">Software Development</h3>
+                        <p style="color:#666;line-height:1.65;margin-bottom:1.5rem;font-size:0.95rem;">Robust web infrastructures and custom software solutions. Scalable, clean architecture, seamless user experience.</p>
+                        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                            <span style="font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:#fff;">Full Stack</span>
+                            <span style="font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:#fff;">SaaS</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Interactive Funnel -->
-        <section id="matchmaker" class="py-40 px-6 bg-black text-white relative overflow-hidden">
-            <!-- Background Decoration -->
-            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-white opacity-[0.03] rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-            
-            <div class="max-w-4xl mx-auto relative z-10">
-                <div class="text-center mb-24 reveal">
-                    <h2 class="text-5xl md:text-7xl font-bold mb-8 tracking-tighter">The Matchmaker</h2>
-                    <p class="text-gray-500 text-lg uppercase tracking-widest font-bold">Engineering your specific solution</p>
-                    <p class="text-gray-600 text-xs mt-4 uppercase tracking-widest">(4-Step Diagnostics)</p>
+        <!-- ═══════════════ THE MATCHMAKER ═══════════════ -->
+        <section id="matchmaker" style="padding:7rem 1.5rem;position:relative;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%, #f5f5f7 0%, transparent 70%);pointer-events:none;"></div>
+            <div style="max-width:52rem;margin:0 auto;position:relative;z-index:1;">
+                <div class="reveal" style="text-align:center;margin-bottom:4rem;">
+                    <p class="section-label" style="justify-content:center;">Precision Diagnostics</p>
+                    <h2 style="font-size:clamp(2.5rem,7vw,5.5rem);font-weight:700;letter-spacing:-0.035em;margin-bottom:1rem;">The Matchmaker</h2>
+                    <p style="color:#6e6e73;font-size:1.05rem;">4 questions. Your exact solution.</p>
                 </div>
-                
-                <div id="funnel-container" class="bg-white/5 p-8 md:p-20 border border-white/10 rounded-sm min-h-[500px] flex flex-col justify-center reveal backdrop-blur-sm">
-                    <!-- Funnel content injected via JS -->
+                <div id="funnel-container" class="reveal" style="background:#000;color:#fff;padding:3.5rem;min-height:26rem;display:flex;flex-direction:column;justify-content:center;border-radius:1.5rem;box-shadow:0 40px 100px rgba(0,0,0,0.15);">
+                    <!-- injected by JS -->
                 </div>
             </div>
         </section>
 
-        <!-- Stats -->
-        <section id="metrics" class="py-40 px-6">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-16 md:gap-8">
-                <div class="reveal border-l border-black pl-8">
-                    <p class="stat-value">13</p>
-                    <p class="text-[11px] uppercase tracking-[0.3em] mt-6 text-gray-500 font-bold">Premium Clients</p>
-                </div>
-                <div class="reveal border-l border-black pl-8" style="transition-delay: 0.1s">
-                    <p class="stat-value">67</p>
-                    <p class="text-[11px] uppercase tracking-[0.3em] mt-6 text-gray-500 font-bold">Projects Shipped</p>
-                </div>
-                <div class="reveal border-l border-black pl-8" style="transition-delay: 0.2s">
-                    <p class="stat-value">93%</p>
-                    <p class="text-[11px] uppercase tracking-[0.3em] mt-6 text-gray-500 font-bold">Approval Rate</p>
-                </div>
-                <div class="reveal border-l border-black pl-8" style="transition-delay: 0.3s">
-                    <p class="stat-value">5+</p>
-                    <p class="text-[11px] uppercase tracking-[0.3em] mt-6 text-gray-500 font-bold">Years Active</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Certifications -->
-        <section id="certifications" class="py-32 px-6 bg-gray-50">
-            <div class="max-w-7xl mx-auto">
-                <div class="mb-20 reveal">
-                    <h2 class="text-4xl md:text-6xl font-bold tracking-tighter mb-4">Technical Validations</h2>
-                    <p class="text-gray-500 text-lg uppercase tracking-widest">Certified expertise in growth engines</p>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-6">
-                    <!-- HubSpot Inbound -->
-                    <a href="https://app-na2.hubspot.com/academy/achievements/6c3q5m2z/en/1/ian-harold-daluyen/inbound-marketing" target="_blank" class="reveal group bg-white p-10 border border-gray-200 hover:border-black transition-all">
-                        <div class="flex justify-between items-start mb-8">
-                            <span class="text-3xl font-bold text-orange-500 group-hover:text-black transition-colors">HubSpot</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                            </svg>
+        <!-- ═══════════════ SKILLS ═══════════════ -->
+        <section style="padding:7rem 1.5rem;background:#f9f9f9;">
+            <div style="max-width:80rem;margin:0 auto;">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="reveal-left">
+                        <p class="section-label">Core Competencies</p>
+                        <h2 style="font-size:clamp(2.5rem,6vw,5rem);font-weight:700;letter-spacing:-0.035em;line-height:1.05;margin-bottom:1.5rem;">Built on<br>Precision.</h2>
+                        <p style="color:#6e6e73;font-size:1.1rem;line-height:1.65;max-width:22rem;">A decade of specialization across marketing engineering, automation, and full-stack development.</p>
+                    </div>
+                    <div class="reveal-right" id="skills-section" style="display:flex;flex-direction:column;gap:2rem;">
+                        <div>
+                            <div style="display:flex;justify-content:space-between;margin-bottom:0.75rem;">
+                                <span style="font-weight:700;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;">Marketing Strategy</span>
+                                <span style="color:#6e6e73;font-weight:600;font-size:0.85rem;">95%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" data-width="95"></div></div>
                         </div>
-                        <h3 class="text-2xl font-bold mb-2">Inbound Marketing</h3>
-                        <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Verified</p>
-                        <p class="text-gray-700">Advanced methodology for attracting customers through content and value creation.</p>
+                        <div>
+                            <div style="display:flex;justify-content:space-between;margin-bottom:0.75rem;">
+                                <span style="font-weight:700;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;">CRM & Automation</span>
+                                <span style="color:#6e6e73;font-weight:600;font-size:0.85rem;">92%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" data-width="92"></div></div>
+                        </div>
+                        <div>
+                            <div style="display:flex;justify-content:space-between;margin-bottom:0.75rem;">
+                                <span style="font-weight:700;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;">SEO & Content</span>
+                                <span style="color:#6e6e73;font-weight:600;font-size:0.85rem;">91%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" data-width="91"></div></div>
+                        </div>
+                        <div>
+                            <div style="display:flex;justify-content:space-between;margin-bottom:0.75rem;">
+                                <span style="font-weight:700;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;">Paid Advertising</span>
+                                <span style="color:#6e6e73;font-weight:600;font-size:0.85rem;">90%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" data-width="90"></div></div>
+                        </div>
+                        <div>
+                            <div style="display:flex;justify-content:space-between;margin-bottom:0.75rem;">
+                                <span style="font-weight:700;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;">Video Production</span>
+                                <span style="color:#6e6e73;font-weight:600;font-size:0.85rem;">88%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" data-width="88"></div></div>
+                        </div>
+                        <div>
+                            <div style="display:flex;justify-content:space-between;margin-bottom:0.75rem;">
+                                <span style="font-weight:700;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;">Software Development</span>
+                                <span style="color:#6e6e73;font-weight:600;font-size:0.85rem;">85%</span>
+                            </div>
+                            <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════ CERTIFICATIONS ═══════════════ -->
+        <section id="certifications" style="padding:7rem 1.5rem;">
+            <div style="max-width:80rem;margin:0 auto;">
+                <div class="reveal" style="margin-bottom:3.5rem;">
+                    <p class="section-label">Technical Validations</p>
+                    <h2 style="font-size:clamp(2.5rem,7vw,5.5rem);font-weight:700;letter-spacing:-0.035em;line-height:1;">Certified<br>Expertise.</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-5">
+                    <a href="https://app-na2.hubspot.com/academy/achievements/6c3q5m2z/en/1/ian-harold-daluyen/inbound-marketing" target="_blank" class="reveal cert-card group" style="background:#fff;padding:2.5rem;border-radius:1rem;">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;">
+                            <span style="font-size:1.5rem;font-weight:700;color:#ff5c35;transition:color 0.2s;" class="group-hover:text-black">HubSpot</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:1.25rem;height:1.25rem;transition:transform 0.2s;" class="group-hover:translate-x-1 group-hover:-translate-y-1"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
+                        </div>
+                        <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:0.4rem;">Inbound Marketing</h3>
+                        <p style="font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:0.2em;font-weight:700;margin-bottom:1rem;">Verified</p>
+                        <p style="color:#6e6e73;line-height:1.6;font-size:0.95rem;">Advanced methodology for attracting and converting customers through content and value creation.</p>
                     </a>
-
-                    <!-- HubSpot Email -->
-                    <a href="https://app-na2.hubspot.com/academy/achievements/hnbhhywh/en/1/ian-harold-daluyen/email-marketing" target="_blank" class="reveal group bg-white p-10 border border-gray-200 hover:border-black transition-all" style="transition-delay: 0.1s">
-                        <div class="flex justify-between items-start mb-8">
-                            <span class="text-3xl font-bold text-orange-500 group-hover:text-black transition-colors">HubSpot</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                            </svg>
+                    <a href="https://app-na2.hubspot.com/academy/achievements/hnbhhywh/en/1/ian-harold-daluyen/email-marketing" target="_blank" class="reveal cert-card group" style="background:#fff;padding:2.5rem;border-radius:1rem;transition-delay:0.1s">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;">
+                            <span style="font-size:1.5rem;font-weight:700;color:#ff5c35;transition:color 0.2s;" class="group-hover:text-black">HubSpot</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:1.25rem;height:1.25rem;transition:transform 0.2s;" class="group-hover:translate-x-1 group-hover:-translate-y-1"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
                         </div>
-                        <h3 class="text-2xl font-bold mb-2">Email Marketing</h3>
-                        <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Verified</p>
-                        <p class="text-gray-700">Strategic contact management, segmentation, and lifecycle marketing automation.</p>
+                        <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:0.4rem;">Email Marketing</h3>
+                        <p style="font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:0.2em;font-weight:700;margin-bottom:1rem;">Verified</p>
+                        <p style="color:#6e6e73;line-height:1.6;font-size:0.95rem;">Strategic contact management, segmentation, and lifecycle marketing automation at scale.</p>
                     </a>
-
-                    <!-- SaaS Marketing (Updated to be a Link) -->
-                    <a href="#" class="reveal group bg-white p-10 border border-gray-200 hover:border-black transition-all" style="transition-delay: 0.2s">
-                        <div class="flex justify-between items-start mb-8">
-                            <span class="text-3xl font-bold text-blue-600 group-hover:text-black transition-colors">SaaS</span>
-                            <!-- Link Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform text-black">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                            </svg>
+                    <a href="#" class="reveal cert-card group" style="background:#fff;padding:2.5rem;border-radius:1rem;transition-delay:0.2s">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;">
+                            <span style="font-size:1.5rem;font-weight:700;color:#2563eb;transition:color 0.2s;" class="group-hover:text-black">SaaS</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:1.25rem;height:1.25rem;transition:transform 0.2s;" class="group-hover:translate-x-1 group-hover:-translate-y-1"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
                         </div>
-                        <h3 class="text-2xl font-bold mb-2">SaaS Marketing</h3>
-                        <p class="text-sm text-gray-500 uppercase tracking-wider mb-4">Certification</p>
-                        <p class="text-gray-700">Specialized strategies for reducing churn, increasing LTV, and product-led growth.</p>
+                        <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:0.4rem;">SaaS Marketing</h3>
+                        <p style="font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:0.2em;font-weight:700;margin-bottom:1rem;">Certified</p>
+                        <p style="color:#6e6e73;line-height:1.6;font-size:0.95rem;">Specialized strategies for reducing churn, increasing LTV, and accelerating product-led growth.</p>
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- Education Foundation -->
-        <section id="education" class="py-40 px-6">
-            <div class="max-w-7xl mx-auto">
-                <h2 class="text-5xl md:text-7xl font-bold mb-20 tracking-tighter reveal">Academic Foundation</h2>
-                
-                <div class="flex flex-col gap-16">
-                    <div class="grid md:grid-cols-12 gap-8 items-center border-b border-gray-100 pb-16 reveal">
+        <!-- ═══════════════ EDUCATION ═══════════════ -->
+        <section id="education" style="padding:7rem 1.5rem;background:#000;color:#fff;">
+            <div style="max-width:80rem;margin:0 auto;">
+                <h2 class="reveal" style="font-size:clamp(2.5rem,7vw,5.5rem);font-weight:700;letter-spacing:-0.035em;line-height:1;margin-bottom:4rem;">Academic<br>Foundation</h2>
+                <div style="border-top:1px solid rgba(255,255,255,0.08);">
+                    <div class="reveal grid md:grid-cols-12 gap-8 items-center" style="padding:3rem 0;border-bottom:1px solid rgba(255,255,255,0.08);">
                         <div class="md:col-span-4">
-                            <p class="text-3xl font-bold uppercase tracking-tight">Holy Angel Univ.</p>
-                            <p class="text-xs text-gray-400 mt-2">Pampanga, PH</p>
+                            <p style="font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:-0.02em;">Holy Angel Univ.</p>
+                            <p style="font-size:11px;color:#555;margin-top:0.3rem;text-transform:uppercase;letter-spacing:0.1em;">Pampanga, Philippines</p>
                         </div>
-                        <div class="md:col-span-8">
-                            <p class="text-2xl font-medium mb-3">Bachelor of Science in Aeronautical Engineering</p>
-                            <p class="text-gray-400 text-xs uppercase tracking-[0.2em] font-bold">The discipline of precision and systems thinking</p>
+                        <div class="md:col-span-5">
+                            <p style="font-size:1.1rem;font-weight:600;margin-bottom:0.4rem;">B.S. Aeronautical Engineering</p>
+                            <p style="font-size:0.85rem;color:#555;text-transform:uppercase;letter-spacing:0.1em;">Precision · Systems Thinking · Engineering Logic</p>
+                        </div>
+                        <div class="md:col-span-3 hidden md:flex justify-end">
+                            <span style="font-size:10px;text-transform:uppercase;letter-spacing:0.15em;border:1px solid rgba(255,255,255,0.15);padding:0.3rem 1rem;color:#666;">Engineering</span>
                         </div>
                     </div>
-                    
-                    <div class="grid md:grid-cols-12 gap-8 items-center border-b border-gray-100 pb-16 reveal" style="transition-delay: 0.1s">
+                    <div class="reveal grid md:grid-cols-12 gap-8 items-center" style="padding:3rem 0;border-bottom:1px solid rgba(255,255,255,0.08);transition-delay:0.1s">
                         <div class="md:col-span-4">
-                            <p class="text-3xl font-bold uppercase tracking-tight">STI College</p>
-                            <p class="text-xs text-gray-400 mt-2">Angeles, PH</p>
+                            <p style="font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:-0.02em;">STI College</p>
+                            <p style="font-size:11px;color:#555;margin-top:0.3rem;text-transform:uppercase;letter-spacing:0.1em;">Angeles, Philippines</p>
                         </div>
-                        <div class="md:col-span-8">
-                            <p class="text-2xl font-medium mb-3">Senior High School Diploma in STEM</p>
-                            <p class="text-gray-400 text-xs uppercase tracking-[0.2em] font-bold">Science Technology Engineering and Mathematics</p>
+                        <div class="md:col-span-5">
+                            <p style="font-size:1.1rem;font-weight:600;margin-bottom:0.4rem;">Senior High School — STEM</p>
+                            <p style="font-size:0.85rem;color:#555;text-transform:uppercase;letter-spacing:0.1em;">Science · Technology · Engineering · Mathematics</p>
+                        </div>
+                        <div class="md:col-span-3 hidden md:flex justify-end">
+                            <span style="font-size:10px;text-transform:uppercase;letter-spacing:0.15em;border:1px solid rgba(255,255,255,0.15);padding:0.3rem 1rem;color:#666;">STEM</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Final Contact -->
-        <section id="contact" class="py-60 px-6 text-center bg-white relative">
-            <div class="max-w-5xl mx-auto">
-                <h2 class="text-6xl md:text-[10rem] font-extrabold mb-12 tracking-tighter reveal">Deploy.</h2>
-                <p class="text-gray-500 text-2xl md:text-3xl mb-20 max-w-2xl mx-auto reveal">I build systems that work when you are sleeping. <br>If you are ready for precision, reach out.</p>
-                <div class="reveal">
-                    <a href="mailto:ianharoldcosyaodaluyen@gmail.com?subject=Service Request&body=Hi Yanyan,%0D%0A%0D%0AI am reaching out to discuss a potential partnership. Note: Due to high volume of request we are diligently processing every inquiry." class="hover-mask inline-block bg-black text-white px-24 py-8 text-[14px] font-bold uppercase tracking-[0.4em] transition-all hover:bg-gray-900">Inquiry & Strategy</a>
+        <!-- ═══════════════ CONTACT ═══════════════ -->
+        <section id="contact" style="padding:10rem 1.5rem;text-align:center;position:relative;overflow:hidden;">
+            <div class="contact-bg"></div>
+            <div style="max-width:60rem;margin:0 auto;position:relative;z-index:1;">
+                <p class="section-label reveal" style="justify-content:center;margin-bottom:1.5rem;">Ready to Deploy</p>
+                <h2 class="reveal" style="font-size:clamp(5rem,15vw,12rem);font-weight:800;letter-spacing:-0.05em;line-height:0.9;margin-bottom:1.5rem;">Deploy.</h2>
+                <p class="reveal" style="color:#6e6e73;font-size:clamp(1.1rem,2.5vw,1.5rem);line-height:1.55;max-width:28rem;margin:0 auto 3rem;font-weight:300;">
+                    I build systems that work while you sleep.<br>Ready for precision?
+                </p>
+                <div class="reveal" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+                    <a href="mailto:ianharoldcosyaodaluyen@gmail.com?subject=Service Request&body=Hi Yanyan,%0D%0A%0D%0AI am reaching out to discuss a potential partnership.%0D%0A%0D%0ANote: Due to high volume of requests we are diligently processing every inquiry."
+                       class="hover-mask btn-mag"
+                       style="display:inline-block;background:#000;color:#fff;padding:1.25rem 3rem;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;text-decoration:none;border-radius:100px;">
+                        Initiate Contact
+                    </a>
+                    <a href="https://www.linkedin.com/in/ian-harold-cosyao-daluyen-26295b325/" target="_blank"
+                       class="btn-mag"
+                       style="display:inline-block;border:2px solid #000;color:#000;padding:1.25rem 3rem;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;text-decoration:none;border-radius:100px;transition:background 0.3s,color 0.3s;">
+                        LinkedIn ↗
+                    </a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="py-24 px-6 border-t border-gray-100 bg-white">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 text-[12px] font-bold uppercase tracking-[0.3em] text-gray-400">
-            <p>Ian Harold Daluyen &copy; 2024</p>
-            <div class="flex flex-col md:flex-row gap-8 items-center">
-                <a href="https://www.linkedin.com/in/ian-harold-cosyao-daluyen-26295b325/" target="_blank" class="hover:text-black transition border-b border-transparent hover:border-black pb-1">LinkedIn</a>
-                <a href="#about" class="hover:text-black transition border-b border-transparent hover:border-black pb-1">Back to Top</a>
-                <span>Manila, Philippines</span>
+    <!-- FOOTER -->
+    <footer style="padding:4rem 1.5rem;border-top:1px solid #f0f0f0;">
+        <div style="max-width:80rem;margin:0 auto;display:flex;flex-direction:column;gap:1rem;align-items:center;" class="md:flex-row md:justify-between">
+            <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#aaa;">Ian Harold Daluyen &copy; 2025</p>
+            <div style="display:flex;gap:2rem;align-items:center;flex-wrap:wrap;justify-content:center;">
+                <a href="https://www.linkedin.com/in/ian-harold-cosyao-daluyen-26295b325/" target="_blank" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#aaa;text-decoration:none;transition:color 0.2s;">LinkedIn</a>
+                <a href="#about" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#aaa;text-decoration:none;transition:color 0.2s;">Back to Top</a>
+                <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#aaa;">Manila, Philippines</span>
             </div>
         </div>
     </footer>
 
     <script>
-        // Updated Observer for Reversible Animation
-        const observerOptions = {
-            threshold: 0.15, // Trigger when 15% visible
-            rootMargin: "0px 0px -50px 0px" // Offset slightly for better visual timing
-        };
+    /* ═══ CURSOR ═══ */
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                // If scrolling down (entering view), add active class
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                } else {
-                    // If scrolling up (leaving view), remove active class to reset animation
-                    // This allows the animation to play again when scrolling back to it
-                    entry.target.classList.remove('active');
-                }
-            });
-        }, observerOptions);
+    document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        cursor.style.left = mx + 'px';
+        cursor.style.top  = my + 'px';
+    });
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    (function trackRing() {
+        rx += (mx - rx) * 0.11;
+        ry += (my - ry) * 0.11;
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        requestAnimationFrame(trackRing);
+    })();
 
-        const myEmail = "ianharoldcosyaodaluyen@gmail.com";
-        const highVolumeNote = "Note: Due to high volume of request we are diligently processing every inquiry. We are reviewing each request to ensure we provide the best service possible.";
+    document.querySelectorAll('a, button, .tilt-card, .industry-card, .cert-card, .country-pill').forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-big'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-big'));
+    });
 
-        // DEEPER FUNNEL LOGIC (Minimum 4 steps per path)
-        const funnelData = {
-            step1: {
-                question: "What is your primary goal?",
-                options: [
-                    { label: "Growth & Ads", next: "growth_step2" },
-                    { label: "Talent & Ops", next: "talent_step2" },
-                    { label: "Dev & Web", next: "dev_step2" },
-                    { label: "Branding", next: "branding_step2" }
-                ]
-            },
-            
-            // --- GROWTH PATH (4 Steps) ---
-            growth_step2: {
-                question: "Which channel?",
-                options: [
-                    { label: "Paid Advertising", next: "growth_ads_step3" },
-                    { label: "Organic Content", next: "growth_content_step3" }
-                ]
-            },
-            growth_ads_step3: {
-                question: "Platform Focus?",
-                options: [
-                    { label: "Google / Search", next: "growth_ads_step4_search" },
-                    { label: "Social (FB/IG)", next: "growth_ads_step4_social" }
-                ]
-            },
-            growth_ads_step4_search: {
-                question: "Monthly Budget?",
-                options: [
-                    { label: "Under $5k", next: "final_ads_starter" },
-                    { label: "Scale ($5k+)", next: "final_ads_scale" }
-                ]
-            },
-            growth_ads_step4_social: {
-                question: "Creative Status?",
-                options: [
-                    { label: "Need Creatives", next: "final_ads_creative" },
-                    { label: "Ready to Run", next: "final_ads_scale" }
-                ]
-            },
-            growth_content_step3: {
-                question: "Content Format?",
-                options: [
-                    { label: "Short Form Video", next: "growth_content_step4_video" },
-                    { label: "Written / SEO", next: "growth_content_step4_seo" }
-                ]
-            },
-            growth_content_step4_video: {
-                question: "Frequency?",
-                options: [
-                    { label: "Daily Posting", next: "final_content_heavy" },
-                    { label: "Weekly Strategic", next: "final_content_strat" }
-                ]
-            },
-            growth_content_step4_seo: {
-                question: "Target?",
-                options: [
-                    { label: "Local Ranking", next: "final_seo_local" },
-                    { label: "Global Authority", next: "final_seo_global" }
-                ]
-            },
+    /* ═══ SCROLL PROGRESS + NAV ═══ */
+    const progressBar = document.getElementById('scroll-progress');
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+        const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+        progressBar.style.width = pct + '%';
+        nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
 
+    /* ═══ REVEAL OBSERVER ═══ */
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) e.target.classList.add('active');
+            else e.target.classList.remove('active');
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => io.observe(el));
 
-            // --- TALENT & OPS PATH (4 Steps) ---
-            talent_step2: {
-                question: "Key bottleneck?",
-                options: [
-                    { label: "Hiring / Recruiting", next: "talent_rec_step3" },
-                    { label: "Manual Data Entry", next: "talent_auto_step3" }
-                ]
-            },
-            talent_rec_step3: {
-                question: "Role Category?",
-                options: [
-                    { label: "Sales / Marketing", next: "talent_rec_step4_sales" },
-                    { label: "Technical / Dev", next: "talent_rec_step4_tech" }
-                ]
-            },
-            talent_rec_step4_sales: {
-                question: "Hiring Volume?",
-                options: [
-                    { label: "1-2 Key Hires", next: "final_recruitment_key" },
-                    { label: "High Volume", next: "final_recruitment_vol" }
-                ]
-            },
-            talent_rec_step4_tech: {
-                question: "Skill Level?",
-                options: [
-                    { label: "Entry / Support", next: "final_recruitment_supp" },
-                    { label: "Senior / Lead", next: "final_recruitment_key" }
-                ]
-            },
-            talent_auto_step3: {
-                question: "Current Stack?",
-                options: [
-                    { label: "Spreadsheets", next: "talent_auto_step4_sheets" },
-                    { label: "CRM (HubSpot/GHL)", next: "talent_auto_step4_crm" }
-                ]
-            },
-            talent_auto_step4_sheets: {
-                question: "Goal?",
-                options: [
-                    { label: "Move to CRM", next: "final_crm_migration" },
-                    { label: "Automate Sheets", next: "final_automation_simple" }
-                ]
-            },
-            talent_auto_step4_crm: {
-                question: "Integration?",
-                options: [
-                    { label: "Connect 3rd Party", next: "final_automation_api" },
-                    { label: "Internal Workflow", next: "final_crm_opt" }
-                ]
-            },
+    /* ═══ COUNTER ═══ */
+    const counterIO = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (!e.isIntersecting || e.target.dataset.done) return;
+            e.target.dataset.done = '1';
+            const target = +e.target.dataset.target;
+            const suffix = e.target.dataset.suffix || '';
+            const duration = 1800;
+            const start = performance.now();
+            (function step(now) {
+                const p = Math.min((now - start) / duration, 1);
+                const ease = 1 - Math.pow(1 - p, 4);
+                e.target.textContent = Math.floor(ease * target) + suffix;
+                if (p < 1) requestAnimationFrame(step);
+            })(start);
+        });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.counter').forEach(el => counterIO.observe(el));
 
-
-            // --- DEV & WEB PATH (4 Steps) ---
-            dev_step2: {
-                question: "Project Type?",
-                options: [
-                    { label: "Custom Software", next: "dev_soft_step3" },
-                    { label: "Website Build", next: "dev_web_step3" }
-                ]
-            },
-            dev_web_step3: {
-                question: "Platform Preference?",
-                options: [
-                    { label: "E-com (Shopify)", next: "dev_web_step4_ecom" },
-                    { label: "Custom / Webflow", next: "dev_web_step4_custom" }
-                ]
-            },
-            dev_web_step4_ecom: {
-                question: "SKU Count?",
-                options: [
-                    { label: "Under 50", next: "final_web_sales" },
-                    { label: "Enterprise (500+)", next: "final_web_enterprise" }
-                ]
-            },
-            dev_web_step4_custom: {
-                question: "Primary Goal?",
-                options: [
-                    { label: "Brand Authority", next: "final_web_auth" },
-                    { label: "Lead Capture", next: "final_web_funnel" }
-                ]
-            },
-            dev_soft_step3: {
-                question: "Project Stage?",
-                options: [
-                    { label: "Idea / MVP", next: "dev_soft_step4_mvp" },
-                    { label: "Existing Product", next: "dev_soft_step4_scale" }
-                ]
-            },
-            dev_soft_step4_mvp: {
-                question: "User Base?",
-                options: [
-                    { label: "Internal Team", next: "final_dev_internal" },
-                    { label: "Public SaaS", next: "final_dev_saas" }
-                ]
-            },
-            dev_soft_step4_scale: {
-                question: "Priority?",
-                options: [
-                    { label: "Refactor / Speed", next: "final_dev_refactor" },
-                    { label: "New Features", next: "final_dev_features" }
-                ]
-            },
-
-
-            // --- BRANDING PATH (4 Steps) ---
-            branding_step2: {
-                question: "What needs focus?",
-                options: [
-                    { label: "Visual Identity", next: "brand_vis_step3" },
-                    { label: "Brand Strategy", next: "brand_strat_step3" }
-                ]
-            },
-            brand_vis_step3: {
-                question: "Current State?",
-                options: [
-                    { label: "New Brand", next: "brand_vis_step4_new" },
-                    { label: "Rebranding", next: "brand_vis_step4_rebrand" }
-                ]
-            },
-            brand_vis_step4_new: {
-                question: "Deliverables?",
-                options: [
-                    { label: "Logo & Colors", next: "final_brand_identity" },
-                    { label: "Full System", next: "final_brand_system" }
-                ]
-            },
-            brand_vis_step4_rebrand: {
-                question: "Reason?",
-                options: [
-                    { label: "Outdated Look", next: "final_brand_modern" },
-                    { label: "Pivot Strategy", next: "final_brand_pivot" }
-                ]
-            },
-            brand_strat_step3: {
-                question: "Target Market?",
-                options: [
-                    { label: "B2B Corporate", next: "brand_strat_step4_b2b" },
-                    { label: "D2C Consumer", next: "brand_strat_step4_d2c" }
-                ]
-            },
-            brand_strat_step4_b2b: {
-                question: "Goal?",
-                options: [
-                    { label: "Trust / Authority", next: "final_brand_auth" },
-                    { label: "Lead Gen", next: "final_brand_leads" }
-                ]
-            },
-            brand_strat_step4_d2c: {
-                question: "Goal?",
-                options: [
-                    { label: "Viral Growth", next: "final_brand_viral" },
-                    { label: "Loyalty / LTV", next: "final_brand_loyalty" }
-                ]
-            }
-        };
-
-        const finalServices = {
-            // ADS
-            final_ads_starter: { title: "Growth Starter Pack", body: "I need a targeted ad strategy for a budget under $5k to prove ROI." },
-            final_ads_scale: { title: "High-Scale Ad Ops", body: "I need to scale my ad spend profitably across platforms." },
-            final_ads_creative: { title: "Creative + Ads", body: "I need high-converting ad creatives and media buying management." },
-            
-            // CONTENT
-            final_content_heavy: { title: "Volume Content Engine", body: "I need a system to produce and post daily video content." },
-            final_content_strat: { title: "Strategic Content", body: "I need high-value weekly content designed for thought leadership." },
-            final_seo_local: { title: "Local Domination", body: "I need to rank #1 in my local area for key search terms." },
-            final_seo_global: { title: "Global SEO Strategy", body: "I need an SEO strategy to compete for global keywords." },
-
-            // RECRUITMENT
-            final_recruitment_key: { title: "Headhunting", body: "I need to find specific, high-level talent for key roles." },
-            final_recruitment_vol: { title: "High-Volume Hiring", body: "I need a system to screen and hire multiple candidates quickly." },
-            final_recruitment_supp: { title: "Support Staff Hiring", body: "I need reliable entry-level or support staff sourced efficiently." },
-
-            // AUTOMATION
-            final_crm_migration: { title: "CRM Migration", body: "I need to move from spreadsheets to a proper CRM system." },
-            final_automation_simple: { title: "Sheet Automation", body: "I need to script and automate my existing spreadsheets." },
-            final_automation_api: { title: "Custom API Integration", body: "I need to connect different software tools via API." },
-            final_crm_opt: { title: "CRM Optimization", body: "I need to optimize workflows within my existing CRM." },
-
-            // DEV
-            final_web_sales: { title: "Conversion Store", body: "I need a fast Shopify store optimized for conversions." },
-            final_web_enterprise: { title: "Enterprise E-com", body: "I need a robust e-commerce solution for a large SKU catalog." },
-            final_web_auth: { title: "Authority Site", body: "I need a premium website to establish brand trust." },
-            final_web_funnel: { title: "Funnel Build", body: "I need a website specifically designed to capture leads." },
-            final_dev_internal: { title: "Internal Tools", body: "I need custom software to improve internal team efficiency." },
-            final_dev_saas: { title: "SaaS MVP Build", body: "I need to build and launch a Minimum Viable Product for a SaaS." },
-            final_dev_refactor: { title: "Code Refactor", body: "I need to clean up and optimize existing code for performance." },
-            final_dev_features: { title: "Feature Dev", body: "I need to add new complex features to an existing product." },
-
-            // BRANDING
-            final_brand_identity: { title: "Visual Identity", body: "I need a logo and color palette to start my brand." },
-            final_brand_system: { title: "Full Brand System", body: "I need a comprehensive design system for all brand touchpoints." },
-            final_brand_modern: { title: "Brand Modernization", body: "I need to update my outdated brand look." },
-            final_brand_pivot: { title: "Strategic Rebrand", body: "I need to rebrand to align with a new business direction." },
-            final_brand_auth: { title: "B2B Authority", body: "I need a brand strategy that builds trust with corporate clients." },
-            final_brand_leads: { title: "B2B Lead Gen Brand", body: "I need branding that supports aggressive lead generation." },
-            final_brand_viral: { title: "Viral Consumer Brand", body: "I need a brand designed for rapid social growth." },
-            final_brand_loyalty: { title: "Loyalty Brand", body: "I need a brand strategy focused on customer retention." }
-        };
-
-        let currentSelections = [];
-
-        function renderFunnelStep(stepId) {
-            const container = document.getElementById('funnel-container');
-            
-            // Animation for transition
-            container.style.opacity = '0';
-            
-            setTimeout(() => {
-                if (finalServices[stepId]) {
-                    const service = finalServices[stepId];
-                    const mailLink = `mailto:${myEmail}?subject=Service Request: ${service.title}&body=Hi Yanyan,%0D%0A%0D%0ASelected Path: ${currentSelections.join(' > ')}%0D%0A%0D%0A${service.body}%0D%0A%0D%0A${highVolumeNote}`;
-                    container.innerHTML = `
-                        <div class="text-center funnel-step">
-                            <span class="text-[12px] font-bold uppercase tracking-widest text-gray-400 mb-6 block">Analysis Complete</span>
-                            <h3 class="text-3xl md:text-5xl font-bold mb-6 uppercase tracking-tighter text-black md:text-white leading-none">${service.title}</h3>
-                            <p class="text-gray-400 mb-10 text-lg max-w-lg mx-auto leading-relaxed">Diagnostic complete. We have identified the optimal engineering strategy for your goal.</p>
-                            <div class="flex flex-col md:flex-row gap-6 justify-center">
-                                <a href="${mailLink}" class="bg-white text-black px-12 py-5 text-[12px] font-bold uppercase tracking-[0.3em] hover:bg-gray-200 transition">Initiate Protocol</a>
-                                <button onclick="resetFunnel()" class="border border-white text-white px-12 py-5 text-[12px] font-bold uppercase tracking-[0.3em] hover:bg-white hover:text-black transition">Restart</button>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    const step = funnelData[stepId] || funnelData.step1;
-                    container.innerHTML = `
-                        <div class="funnel-step w-full">
-                            <div class="flex justify-between items-center mb-10">
-                                <p class="text-[10px] font-bold uppercase tracking-[0.5em] text-gray-500">Step ${currentSelections.length + 1} / 4</p>
-                                <button onclick="resetFunnel()" class="text-[10px] uppercase text-gray-600 hover:text-white transition">Reset</button>
-                            </div>
-                            <h3 class="text-3xl md:text-5xl font-bold mb-12 tracking-tight text-white">${step.question}</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                ${step.options.map(opt => `
-                                    <button onclick="handleSelection('${opt.label}', '${opt.next}')" class="p-8 border border-white/20 hover:border-white hover:bg-white/5 text-left group transition-all duration-300">
-                                        <span class="text-[10px] font-bold uppercase tracking-widest block mb-3 text-gray-500 group-hover:text-gray-300">Select</span>
-                                        <span class="text-xl md:text-2xl font-bold uppercase tracking-tighter text-white">${opt.label}</span>
-                                    </button>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                }
-                container.style.opacity = '1';
-            }, 300);
-        }
-
-        function handleSelection(label, next) {
-            currentSelections.push(label);
-            renderFunnelStep(next);
-        }
-
-        function resetFunnel() {
-            currentSelections = [];
-            renderFunnelStep('step1');
-        }
-
-        renderFunnelStep('step1');
-        
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                if (this.getAttribute('href').startsWith('#')) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-                }
+    /* ═══ SKILL BARS ═══ */
+    const skillIO = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            e.target.querySelectorAll('.skill-fill').forEach(bar => {
+                setTimeout(() => { bar.style.width = bar.dataset.width + '%'; }, 150);
             });
         });
+    }, { threshold: 0.3 });
+    const skillsSection = document.getElementById('skills-section');
+    if (skillsSection) skillIO.observe(skillsSection);
+
+    /* ═══ 3D TILT CARDS ═══ */
+    document.querySelectorAll('.tilt-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const r = card.getBoundingClientRect();
+            const x = ((e.clientX - r.left) / r.width  - 0.5) * 10;
+            const y = ((e.clientY - r.top)  / r.height - 0.5) * -10;
+            card.style.transform = `perspective(800px) rotateX(${y}deg) rotateY(${x}deg) scale(1.025)`;
+            card.style.transition = 'transform 0.1s ease, box-shadow 0.3s ease';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)';
+            card.style.transition = 'transform 0.5s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease';
+        });
+    });
+
+    /* ═══ MAGNETIC BUTTONS ═══ */
+    document.querySelectorAll('.btn-mag').forEach(btn => {
+        btn.addEventListener('mousemove', e => {
+            const r = btn.getBoundingClientRect();
+            const x = (e.clientX - r.left - r.width  / 2) * 0.22;
+            const y = (e.clientY - r.top  - r.height / 2) * 0.22;
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+        });
+        btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)'; });
+    });
+
+    /* ═══ MOBILE MENU ═══ */
+    const mobileMenu = document.getElementById('mobile-menu');
+    document.getElementById('hamburger').addEventListener('click', () => mobileMenu.classList.add('open'));
+    document.getElementById('close-menu').addEventListener('click', () => mobileMenu.classList.remove('open'));
+    document.querySelectorAll('.mobile-link').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+    /* ═══ SMOOTH SCROLL ═══ */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const href = a.getAttribute('href');
+            if (href.length > 1) {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+    /* ═══ FUNNEL ═══ */
+    const EMAIL = "ianharoldcosyaodaluyen@gmail.com";
+    const NOTE = "Note: Due to high volume of requests we are diligently processing every inquiry.";
+
+    const funnelData = {
+        step1: { question: "What is your primary goal?", options: [
+            { label: "Growth & Ads", next: "growth_step2" },
+            { label: "Talent & Ops", next: "talent_step2" },
+            { label: "Dev & Web", next: "dev_step2" },
+            { label: "Branding", next: "branding_step2" }
+        ]},
+        growth_step2: { question: "Which channel?", options: [
+            { label: "Paid Advertising", next: "growth_ads_step3" },
+            { label: "Organic Content", next: "growth_content_step3" }
+        ]},
+        growth_ads_step3: { question: "Platform Focus?", options: [
+            { label: "Google / Search", next: "growth_ads_step4_search" },
+            { label: "Social (FB / IG)", next: "growth_ads_step4_social" }
+        ]},
+        growth_ads_step4_search: { question: "Monthly Budget?", options: [
+            { label: "Under $5k", next: "final_ads_starter" },
+            { label: "Scale ($5k+)", next: "final_ads_scale" }
+        ]},
+        growth_ads_step4_social: { question: "Creative Status?", options: [
+            { label: "Need Creatives", next: "final_ads_creative" },
+            { label: "Ready to Run", next: "final_ads_scale" }
+        ]},
+        growth_content_step3: { question: "Content Format?", options: [
+            { label: "Short Form Video", next: "growth_content_step4_video" },
+            { label: "Written / SEO", next: "growth_content_step4_seo" }
+        ]},
+        growth_content_step4_video: { question: "Frequency?", options: [
+            { label: "Daily Posting", next: "final_content_heavy" },
+            { label: "Weekly Strategic", next: "final_content_strat" }
+        ]},
+        growth_content_step4_seo: { question: "Target?", options: [
+            { label: "Local Ranking", next: "final_seo_local" },
+            { label: "Global Authority", next: "final_seo_global" }
+        ]},
+        talent_step2: { question: "Key bottleneck?", options: [
+            { label: "Hiring / Recruiting", next: "talent_rec_step3" },
+            { label: "Manual Data Entry", next: "talent_auto_step3" }
+        ]},
+        talent_rec_step3: { question: "Role Category?", options: [
+            { label: "Sales / Marketing", next: "talent_rec_step4_sales" },
+            { label: "Technical / Dev", next: "talent_rec_step4_tech" }
+        ]},
+        talent_rec_step4_sales: { question: "Hiring Volume?", options: [
+            { label: "1-2 Key Hires", next: "final_recruitment_key" },
+            { label: "High Volume", next: "final_recruitment_vol" }
+        ]},
+        talent_rec_step4_tech: { question: "Skill Level?", options: [
+            { label: "Entry / Support", next: "final_recruitment_supp" },
+            { label: "Senior / Lead", next: "final_recruitment_key" }
+        ]},
+        talent_auto_step3: { question: "Current Stack?", options: [
+            { label: "Spreadsheets", next: "talent_auto_step4_sheets" },
+            { label: "CRM (HubSpot/GHL)", next: "talent_auto_step4_crm" }
+        ]},
+        talent_auto_step4_sheets: { question: "Goal?", options: [
+            { label: "Move to CRM", next: "final_crm_migration" },
+            { label: "Automate Sheets", next: "final_automation_simple" }
+        ]},
+        talent_auto_step4_crm: { question: "Integration?", options: [
+            { label: "Connect 3rd Party", next: "final_automation_api" },
+            { label: "Internal Workflow", next: "final_crm_opt" }
+        ]},
+        dev_step2: { question: "Project Type?", options: [
+            { label: "Custom Software", next: "dev_soft_step3" },
+            { label: "Website Build", next: "dev_web_step3" }
+        ]},
+        dev_web_step3: { question: "Platform?", options: [
+            { label: "E-com (Shopify)", next: "dev_web_step4_ecom" },
+            { label: "Custom / Webflow", next: "dev_web_step4_custom" }
+        ]},
+        dev_web_step4_ecom: { question: "SKU Count?", options: [
+            { label: "Under 50", next: "final_web_sales" },
+            { label: "Enterprise (500+)", next: "final_web_enterprise" }
+        ]},
+        dev_web_step4_custom: { question: "Primary Goal?", options: [
+            { label: "Brand Authority", next: "final_web_auth" },
+            { label: "Lead Capture", next: "final_web_funnel" }
+        ]},
+        dev_soft_step3: { question: "Project Stage?", options: [
+            { label: "Idea / MVP", next: "dev_soft_step4_mvp" },
+            { label: "Existing Product", next: "dev_soft_step4_scale" }
+        ]},
+        dev_soft_step4_mvp: { question: "User Base?", options: [
+            { label: "Internal Team", next: "final_dev_internal" },
+            { label: "Public SaaS", next: "final_dev_saas" }
+        ]},
+        dev_soft_step4_scale: { question: "Priority?", options: [
+            { label: "Refactor / Speed", next: "final_dev_refactor" },
+            { label: "New Features", next: "final_dev_features" }
+        ]},
+        branding_step2: { question: "What needs focus?", options: [
+            { label: "Visual Identity", next: "brand_vis_step3" },
+            { label: "Brand Strategy", next: "brand_strat_step3" }
+        ]},
+        brand_vis_step3: { question: "Current State?", options: [
+            { label: "New Brand", next: "brand_vis_step4_new" },
+            { label: "Rebranding", next: "brand_vis_step4_rebrand" }
+        ]},
+        brand_vis_step4_new: { question: "Deliverables?", options: [
+            { label: "Logo & Colors", next: "final_brand_identity" },
+            { label: "Full System", next: "final_brand_system" }
+        ]},
+        brand_vis_step4_rebrand: { question: "Reason?", options: [
+            { label: "Outdated Look", next: "final_brand_modern" },
+            { label: "Pivot Strategy", next: "final_brand_pivot" }
+        ]},
+        brand_strat_step3: { question: "Target Market?", options: [
+            { label: "B2B Corporate", next: "brand_strat_step4_b2b" },
+            { label: "D2C Consumer", next: "brand_strat_step4_d2c" }
+        ]},
+        brand_strat_step4_b2b: { question: "Goal?", options: [
+            { label: "Trust / Authority", next: "final_brand_auth" },
+            { label: "Lead Gen", next: "final_brand_leads" }
+        ]},
+        brand_strat_step4_d2c: { question: "Goal?", options: [
+            { label: "Viral Growth", next: "final_brand_viral" },
+            { label: "Loyalty / LTV", next: "final_brand_loyalty" }
+        ]}
+    };
+
+    const finalServices = {
+        final_ads_starter: { title: "Growth Starter Pack", body: "I need a targeted ad strategy for a budget under $5k to prove ROI." },
+        final_ads_scale: { title: "High-Scale Ad Ops", body: "I need to scale my ad spend profitably across platforms." },
+        final_ads_creative: { title: "Creative + Ads", body: "I need high-converting ad creatives and media buying management." },
+        final_content_heavy: { title: "Volume Content Engine", body: "I need a system to produce and post daily video content." },
+        final_content_strat: { title: "Strategic Content", body: "I need high-value weekly content designed for thought leadership." },
+        final_seo_local: { title: "Local Domination", body: "I need to rank #1 in my local area for key search terms." },
+        final_seo_global: { title: "Global SEO Strategy", body: "I need an SEO strategy to compete for global keywords." },
+        final_recruitment_key: { title: "Headhunting", body: "I need to find specific, high-level talent for key roles." },
+        final_recruitment_vol: { title: "High-Volume Hiring", body: "I need a system to screen and hire multiple candidates quickly." },
+        final_recruitment_supp: { title: "Support Staff Hiring", body: "I need reliable entry-level or support staff sourced efficiently." },
+        final_crm_migration: { title: "CRM Migration", body: "I need to move from spreadsheets to a proper CRM system." },
+        final_automation_simple: { title: "Sheet Automation", body: "I need to script and automate my existing spreadsheets." },
+        final_automation_api: { title: "Custom API Integration", body: "I need to connect different software tools via API." },
+        final_crm_opt: { title: "CRM Optimization", body: "I need to optimize workflows within my existing CRM." },
+        final_web_sales: { title: "Conversion Store", body: "I need a fast Shopify store optimized for conversions." },
+        final_web_enterprise: { title: "Enterprise E-com", body: "I need a robust e-commerce solution for a large SKU catalog." },
+        final_web_auth: { title: "Authority Site", body: "I need a premium website to establish brand trust." },
+        final_web_funnel: { title: "Funnel Build", body: "I need a website specifically designed to capture leads." },
+        final_dev_internal: { title: "Internal Tools", body: "I need custom software to improve internal team efficiency." },
+        final_dev_saas: { title: "SaaS MVP Build", body: "I need to build and launch a Minimum Viable Product for a SaaS." },
+        final_dev_refactor: { title: "Code Refactor", body: "I need to clean up and optimize existing code for performance." },
+        final_dev_features: { title: "Feature Dev", body: "I need to add new complex features to an existing product." },
+        final_brand_identity: { title: "Visual Identity", body: "I need a logo and color palette to start my brand." },
+        final_brand_system: { title: "Full Brand System", body: "I need a comprehensive design system for all brand touchpoints." },
+        final_brand_modern: { title: "Brand Modernization", body: "I need to update my outdated brand look." },
+        final_brand_pivot: { title: "Strategic Rebrand", body: "I need to rebrand to align with a new business direction." },
+        final_brand_auth: { title: "B2B Authority", body: "I need a brand strategy that builds trust with corporate clients." },
+        final_brand_leads: { title: "B2B Lead Gen Brand", body: "I need branding that supports aggressive lead generation." },
+        final_brand_viral: { title: "Viral Consumer Brand", body: "I need a brand designed for rapid social growth." },
+        final_brand_loyalty: { title: "Loyalty Brand", body: "I need a brand strategy focused on customer retention." }
+    };
+
+    let selections = [];
+
+    function renderFunnel(stepId) {
+        const fc = document.getElementById('funnel-container');
+        fc.style.opacity = '0';
+        setTimeout(() => {
+            if (finalServices[stepId]) {
+                const s = finalServices[stepId];
+                const path = selections.join(' → ');
+                const mail = `mailto:${EMAIL}?subject=Service Request: ${s.title}&body=Hi Yanyan,%0D%0A%0D%0ASelected Path: ${encodeURIComponent(path)}%0D%0A%0D%0A${encodeURIComponent(s.body)}%0D%0A%0D%0A${encodeURIComponent(NOTE)}`;
+                fc.innerHTML = `
+                  <div style="text-align:center;">
+                    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3em;color:#555;margin-bottom:1.5rem;">Analysis Complete</p>
+                    <h3 style="font-size:clamp(1.8rem,5vw,3.5rem);font-weight:700;letter-spacing:-0.03em;margin-bottom:1rem;line-height:1.1;">${s.title}</h3>
+                    <p style="color:#666;margin-bottom:2.5rem;font-size:1rem;line-height:1.65;max-width:28rem;margin-left:auto;margin-right:auto;">Diagnostic complete. We identified the optimal engineering strategy for your goal.</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+                      <a href="${mail}" style="display:inline-block;background:#fff;color:#000;padding:1rem 2.5rem;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;text-decoration:none;border-radius:100px;transition:background 0.2s;">Initiate Protocol</a>
+                      <button onclick="resetFunnel()" style="display:inline-block;border:1px solid rgba(255,255,255,0.3);color:#fff;padding:1rem 2.5rem;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;background:none;border-radius:100px;cursor:none;transition:background 0.2s;">Restart</button>
+                    </div>
+                  </div>`;
+            } else {
+                const step = funnelData[stepId] || funnelData.step1;
+                const optionsHTML = step.options.map(o => `
+                  <button onclick="handleSelection('${o.label}','${o.next}')" class="funnel-btn" style="background:none;color:#fff;border-radius:0.75rem;cursor:none;width:100%;text-align:left;border:1px solid rgba(255,255,255,0.15);padding:1.5rem 1.75rem;transition:all 0.25s ease;">
+                    <span style="display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#555;margin-bottom:0.4rem;">Select</span>
+                    <span style="font-size:clamp(1rem,2.5vw,1.4rem);font-weight:700;letter-spacing:-0.02em;">${o.label}</span>
+                  </button>`).join('');
+                fc.innerHTML = `
+                  <div style="width:100%;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;">
+                      <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.3em;color:#555;">Step ${selections.length + 1} / 4</p>
+                      <button onclick="resetFunnel()" style="font-size:10px;text-transform:uppercase;letter-spacing:0.15em;color:#555;background:none;border:none;cursor:none;font-weight:700;">Reset</button>
+                    </div>
+                    <h3 style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:700;letter-spacing:-0.03em;margin-bottom:2rem;line-height:1.2;">${step.question}</h3>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.75rem;">${optionsHTML}</div>
+                  </div>`;
+            }
+            fc.style.opacity = '1';
+        }, 280);
+    }
+
+    function handleSelection(label, next) {
+        selections.push(label);
+        renderFunnel(next);
+    }
+
+    function resetFunnel() {
+        selections = [];
+        renderFunnel('step1');
+    }
+
+    renderFunnel('step1');
     </script>
 </body>
 </html>
