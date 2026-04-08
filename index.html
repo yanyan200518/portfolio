@@ -306,22 +306,6 @@
             border-radius: 2px;
         }
 
-        /* ——— HOVER MASK ——— */
-        .hover-mask {
-            position: relative;
-            overflow: hidden;
-            transition: color 0.4s;
-        }
-        .hover-mask::after {
-            content: '';
-            position: absolute; inset: 0;
-            background: #000;
-            transform: translateY(101%);
-            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-            z-index: -1;
-        }
-        .hover-mask:hover::after { transform: translateY(0); }
-        .hover-mask:hover { color: #fff; }
 
         /* ——— SECTION LABEL ——— */
         .section-label {
@@ -381,8 +365,6 @@
             background: radial-gradient(ellipse 80% 60% at 50% 50%, #f5f5f7 0%, transparent 70%);
         }
 
-        /* ——— MAGNETIC ——— */
-        .btn-mag { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
     </style>
 </head>
 <body>
@@ -454,7 +436,7 @@
                             <a href="#matchmaker" style="display:inline-flex;align-items:center;gap:10px;border:2px solid #000;padding:1.1rem 2.2rem;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;text-decoration:none;color:#000;">
                                 Find Your Solution &rarr;
                             </a>
-                            <a href="mailto:ianharoldcosyaodaluyen@gmail.com" class="btn-mag" style="display:inline-flex;align-items:center;gap:8px;padding:1.1rem 2rem;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;text-decoration:none;color:#6e6e73;transition:color 0.2s;">
+                            <a href="mailto:ianharoldcosyaodaluyen@gmail.com" style="display:inline-flex;align-items:center;gap:8px;padding:1.1rem 2rem;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;text-decoration:none;color:#6e6e73;transition:color 0.2s;">
                                 Get in Touch ↗
                             </a>
                         </div>
@@ -895,13 +877,12 @@
                 </p>
                 <div class="reveal" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
                     <a href="mailto:ianharoldcosyaodaluyen@gmail.com?subject=Service Request&body=Hi Yanyan,%0D%0A%0D%0AI am reaching out to discuss a potential partnership.%0D%0A%0D%0ANote: Due to high volume of requests we are diligently processing every inquiry."
-                       class="hover-mask btn-mag"
+                       class=""
                        style="display:inline-block;background:#000;color:#fff;padding:1.25rem 3rem;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;text-decoration:none;border-radius:100px;">
                         Initiate Contact
                     </a>
                     <a href="https://www.linkedin.com/in/ian-harold-cosyao-daluyen-26295b325/" target="_blank"
-                       class="btn-mag"
-                       style="display:inline-block;border:2px solid #000;color:#000;padding:1.25rem 3rem;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;text-decoration:none;border-radius:100px;transition:background 0.3s,color 0.3s;">
+                       style="display:inline-block;border:2px solid #000;color:#000;padding:1.25rem 3rem;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;text-decoration:none;border-radius:100px;">
                         LinkedIn ↗
                     </a>
                 </div>
@@ -1010,16 +991,6 @@
         });
     });
 
-    /* ═══ MAGNETIC BUTTONS ═══ */
-    document.querySelectorAll('.btn-mag').forEach(btn => {
-        btn.addEventListener('mousemove', e => {
-            const r = btn.getBoundingClientRect();
-            const x = (e.clientX - r.left - r.width  / 2) * 0.22;
-            const y = (e.clientY - r.top  - r.height / 2) * 0.22;
-            btn.style.transform = `translate(${x}px, ${y}px)`;
-        });
-        btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)'; });
-    });
 
     /* ═══ MOBILE MENU ═══ */
     const mobileMenu = document.getElementById('mobile-menu');
